@@ -1,0 +1,21 @@
+#importNoti strong {
+    color: #DA4FB8
+}
+
+#zzBackup ol {
+    margin: 5px 0 15px;
+    list-style: none outside none
+}
+
+#zzBackup fieldset {
+    counter-reset: section
+}
+
+#zzBackup li:before {
+    counter-increment: section;
+    content: counter(section) '.';
+    width: 30px;
+    display: inline-block;
+    text-align: right;
+    margin-right: 5px
+}
