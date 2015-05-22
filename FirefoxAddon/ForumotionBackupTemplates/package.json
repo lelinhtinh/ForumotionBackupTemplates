@@ -1,0 +1,17 @@
+{
+    "name": "forumotion-backup-templates",
+    "title": "Forumotion Backup Templates",
+    "id": "jid1-wjPleSszBb5JlQ",
+    "description": "Export & Import Forumotion templates",
+    "author": "baivong",
+    "license": "MPL 2.0",
+    "version": "1.0.1",
+    "homepage": "https://github.com/baivong/ForumotionBackupTemplates",
+    "icon": "icon.png",
+    "preferences": [{
+        "type": "string",
+        "name": "fmURL",
+        "value": "",
+        "title": "Add your forumotion URL"
+    }]
+}

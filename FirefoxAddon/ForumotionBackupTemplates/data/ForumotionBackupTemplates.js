@@ -2,9 +2,8 @@
  * jsZip (v2.5.0) By StuartKnightley <http://stuartk.com/jszip>
  * jszip-utils (v0.0.2) By Stuart Knightley, David Duponchel <http://stuk.github.io/jszip-utils>
  * FileSaver (2015-05-07.2) By Eli Grey <http://eligrey.com>
- * ForumotionBackupTemplates (v0.6.2) By Zzbaivong <http://devs.forumvi.com>
+ * ForumotionBackupTemplates (v1.0.1) By Zzbaivong <http://devs.forumvi.com>
  */
-
 
 /**
  * Yêu cầu cấp phép bật thông báo nếu chưa được bật
@@ -12,7 +11,6 @@
 if (Notification.permission !== "denied") {
     Notification.requestPermission();
 }
-
 
 /**
  * Hiển thị thông báo
@@ -26,7 +24,6 @@ function shownoti(t, opt) {
     };
 }
 
-
 /**
  * Cấu hình thông báp
  * @param  {String} t Error/Success
@@ -36,18 +33,18 @@ function notifyMe(t, b) {
     var opt = {
         tag: "zzfmbackup",
         body: b,
-        icon: "http://i.imgur.com/O2FynGN.png",
+        icon: goodIcon,
         onshow: function () {}
     };
 
     if (t === "Error") {
-        opt.icon = "http://i.imgur.com/ubZxy3A.png";
+        opt.icon = badIcon;
     }
 
     // Kiểm tra hỗ trợ API thông báo
     if (!("Notification" in window)) {
 
-        window.console && console.log("Trình duyệt này không hỗ trợ chức năng thông báo trên Desktop.");
+        console.log("Trình duyệt này không hỗ trợ chức năng thông báo trên Desktop.");
 
     } else if (Notification.permission === "granted") { // Hiển thị thông báo nếu đã cấp phép
 
@@ -127,13 +124,6 @@ var lang = {
             filter: "Kiểm tra",
             refresh: "Làm lại",
             submit: "Xác nhận"
-        },
-        icon: {
-            load: "http://i.imgur.com/m3NXDa6.gif",
-            info: "http://i.imgur.com/Tuv2aWf.png",
-            error: "http://i.imgur.com/ffXpTVP.gif",
-            success: "http://i.imgur.com/R7Y7JtX.gif",
-            disable: "http://i.imgur.com/06GXmA1.png"
         }
     },
     en: {
@@ -181,15 +171,16 @@ var lang = {
             filter: "Check",
             refresh: "Start over",
             submit: "Ok"
-        },
-        icon: {
-            load: "http://i.imgur.com/m3NXDa6.gif",
-            info: "http://i.imgur.com/Tuv2aWf.png",
-            error: "http://i.imgur.com/ffXpTVP.gif",
-            success: "http://i.imgur.com/R7Y7JtX.gif",
-            disable: "http://i.imgur.com/06GXmA1.png"
         }
     }
+};
+
+var icons = {
+    load: loadIcon,
+    info: infoIcon,
+    error: errorIcon,
+    success: successIcon,
+    disable: disableIcon
 };
 
 
@@ -255,7 +246,7 @@ var tId = $("a", "#activetab").attr("href").match(/&tid=([^&?]+)/)[1]; // Mã tr
  * @param  {Selector} imp  Vị trí hiển thị ghi chú
  */
 function noti(mess, icon, imp) {
-    var showIcon = "<img src=\"" + trans.icon[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;\" > ";
+    var showIcon = "<img src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;\" > ";
     if (!icon) {
         showIcon = "";
     }
@@ -264,7 +255,7 @@ function noti(mess, icon, imp) {
         se = "#importNoti";
     }
     $(se).html(showIcon + showTip(mess).html);
-    window.console && console.log(showTip(mess).text);
+    console.log(showTip(mess).text);
 }
 
 
@@ -294,10 +285,10 @@ function replaceIcon(se, icon) {
     if (img.length) {
         img.attr({
             "class": "icon_" + icon,
-            src: trans.icon[icon]
+            src: icons[icon]
         });
     } else {
-        $(se).hide().after("<img class=\"icon_" + icon + "\" src=\"" + trans.icon[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" />");
+        $(se).hide().after("<img class=\"icon_" + icon + "\" src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" />");
     }
 }
 
@@ -338,7 +329,6 @@ function requestLimit(exim, time, se, temp, Id, callback) {
             }
         }, 1000);
 }
-
 
 /**
  * Xuất template ra và tải về máy
@@ -569,7 +559,7 @@ function testTemp(n) {
 
         } else { // Không có tem chỉnh sửa
             $this.prop("checked", false);
-            showResult = "<li><img src=\"" + trans.icon.disable + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" /> <em>" + trans.ex.notemplate + "</em></li>";
+            showResult = "<li><img src=\"" + icons.disable + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" /> <em>" + trans.ex.notemplate + "</em></li>";
         }
 
         catWrap.attr("class", status);
@@ -595,7 +585,7 @@ function testTemp(n) {
             }
             noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
 
-            if($("#exportOne").prop("checked")) {
+            if ($("#exportOne").prop("checked")) {
                 $("#exportTemp").click();
             }
         }
@@ -614,7 +604,8 @@ var listTempGroup = {
     group: "Usergroups",
     post: "Post & Private Messages",
     moderation: "Moderation",
-    profil: "Profile"
+    profil: "Profile",
+    mobile: "Mobile version"
 }; // Danh sách các nhóm Templates
 
 /**
@@ -639,7 +630,11 @@ var current_tooltip, bubble,
  */
 function show_tooltip3(a, c) {
     var b = document.getElementById("tooltip");
-    b || (b = document.createElement("div"), b.setAttribute("id", "tooltip"), document.body.appendChild(b));
+    if (!b) {
+        b = document.createElement("div");
+        b.setAttribute("id", "tooltip");
+        document.body.appendChild(b);
+    }
     b.style.zIndex = 1000;
     b.style.position = "absolute";
     b.innerHTML = "<p class=\"header\">HELP</p><p>" + showTip(bubble[c]).html + "</p>";
@@ -852,13 +847,13 @@ $("#zzImport").on("change", "#importZip", function (evt) {
                         });
                     });
 
-                    if($("#importOne").prop("checked")) {
+                    if ($("#importOne").prop("checked")) {
                         $("#importTemp").click();
                     }
                 }
-            } catch (e) { // Lỗi trình duyệt không hỗ trợ
+            } catch (es) { // Lỗi trình duyệt không hỗ trợ
                 noti(trans.notsupport, "error", true);
-                window.console && console.log(e.message);
+                console.log(es.message);
             }
         };
     })(files);
