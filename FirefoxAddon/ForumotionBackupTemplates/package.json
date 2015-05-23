@@ -1,17 +1,28 @@
 {
-    "name": "forumotion-backup-templates",
     "title": "Forumotion Backup Templates",
-    "id": "jid1-wjPleSszBb5JlQ",
+    "name": "forumotion-backup-templates",
+    "version": "2.0.0",
     "description": "Export & Import Forumotion templates",
+    "main": "index.js",
     "author": "baivong",
+    "engines": {
+        "firefox": ">=38.0a1"
+    },
     "license": "MPL 2.0",
-    "version": "1.0.2",
-    "homepage": "https://github.com/baivong/ForumotionBackupTemplates",
     "icon": "icon.png",
-    "preferences": [{
-        "type": "string",
-        "name": "fmURL",
-        "value": "",
-        "title": "Add your forumotion URL"
-    }]
+    "preferences": [
+        {
+            "type": "string",
+            "name": "fmURL",
+            "value": "",
+            "title": "Add your forumotion URL"
+        },
+        {
+            "description": "Pin tab that is running Backup.",
+            "type": "bool",
+            "name": "fmPin",
+            "value": false,
+            "title": "Pin tab?"
+        }
+    ]
 }

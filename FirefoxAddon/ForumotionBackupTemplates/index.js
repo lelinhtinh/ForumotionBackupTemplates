@@ -1,3 +1,6 @@
+require("sdk/preferences/service").set("extensions.sdk.console.logLevel", "debug");
+
+
 var tabs = require("sdk/tabs");
 var self = require("sdk/self"),
     data = self.data;
@@ -5,8 +8,11 @@ var prefs = require("sdk/simple-prefs").prefs;
 var pageMod = require("sdk/page-mod");
 var buttons = require("sdk/ui/button/action");
 
-
-var prefsTab = {};
+var patt = /http:\/\/(www\.)?([^\/\s\n\?\&\:\+\%\!\#\.\@]+\.){1,2}\w{2,4}/; // Lọc tên miền trong URL nhập vào
+var listTabsId = [],
+    activeTabId = 0,
+    prefsTab = {},
+    backupTab = {};
 
 /**
  * Mở trang tùy chỉnh của addon Forumotion Backup Templates
@@ -16,60 +22,74 @@ function openPrefPage() {
         contentScriptWhen: "end",
         contentScript: "AddonManager.getAddonByID('" + self.id + "', function(aAddon) {unsafeWindow.gViewController.commands.cmd_showItemDetails.doCommand(aAddon, true);});"
     });
-    // prefsTab.pin();
-    prefsTab.activate();
-}
 
-/**
- * Mở trang quản lý addon của Firefox
- */
-function openAddonPage() {
-    if (!prefsTab.id) {
-        tabs.open({
-            url: "about:addons",
-            onReady: function (tab) {
-                prefsTab = tab;
-                openPrefPage();
-            }
-        });
-    } else {
-        openPrefPage();
+    if (prefsTab.id !== activeTabId.id) {
+        prefsTab.activate();
     }
 }
 
-var backupTab = {};
 
 /**
  * Xử lý khi click vào nút chức năng
  */
 function handleClick() {
+    activeTabId = tabs.activeTab.id; // Lấy id tab đang mở
+
+    // Cập nhật danh sách tab id
+    listTabsId = [];
+    for (let tab of tabs) {
+        listTabsId.push(tab.id);
+    }
+
     var setURL = prefs.fmURL;
-    if (!setURL) {
-        openAddonPage();
+    // console.log(setURL);
+    if (!patt.test(setURL)) { // Nếu thiết lập URL chưa đúng hoặc chưa thiết lập
+        prefs.fmURL = "";
+
+        if (listTabsId.indexOf(prefsTab.id) === -1) { // Không có tab thiết lập URL
+            tabs.open({
+                url: "about:addons",
+                onReady: function (tab) {
+                    prefsTab = tab;
+                    openPrefPage();
+                }
+            });
+        } else {
+            openPrefPage();
+        }
+
     } else {
-        if (!backupTab.id) {
-            var patt = /http:\/\/(www\.)?([^\/\s\n\?\&\:\+\%\!\#\.\@]+\.){1,2}\w{2,4}/; // Lọc tên miền trong URL nhập vào
-            if (patt.test(setURL)) {
-                prefsTab.close();
-                setURL = setURL.match(patt)[0];
-                tabs.open({
-                    url: setURL + "/admin/index.forum?mode=export&part=themes&sub=styles",
-                    onReady: function (tab) {
-                        backupTab = tab;
+
+        if (listTabsId.indexOf(prefsTab.id) !== -1) { // Nếu tab thiết lập URL đang mở
+            prefsTab.close();
+        }
+
+        if (listTabsId.indexOf(backupTab.id) === -1) { // Không có tab Themes management
+
+            setURL = setURL.match(patt)[0]; // Cập nhật URL, chỉ lấy phần protocol + host
+
+            tabs.open({
+                url: setURL + "/admin/index.forum?mode=export&part=themes&sub=styles",
+                onReady: function (tab) {
+                    backupTab = tab;
+                    if (prefs.fmPin) {
+                        backupTab.pin();
                     }
-                });
-                prefs.fmURL = setURL;
-            } else {
-                prefs.fmURL = "";
-                openAddonPage();
-            }
+                }
+            });
+            prefs.fmURL = setURL;
+
         } else {
             var backupURL = setURL + "/admin/index.forum?mode=export&part=themes&sub=styles";
             if (backupTab.url.indexOf(backupURL) !== 0) {
                 backupTab.url = backupURL;
             }
             backupTab.activate();
+            if (prefs.fmPin) {
+                backupTab.pin();
+            }
         }
+
     }
 }
 
