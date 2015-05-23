@@ -1,17 +1,15 @@
 # Forumotion Backup Templates
 
-This extension help you backup templates for your forumotion (all version).
+This extension will help you export and import of all templates in forumotion quickly and accurately.
 
-1. Export all **changed template** to a *.zip file and save it into your computer.
-2. Import template from a *.zip file from your computer.
-3. Desktop notifications at the end of the process.
-4. **One-Click mode**: Use when need to backup all Templates.
-
+1. All templates will be compressed into a zip file to store and share very convenient.
+1. Import the backup file from your computer with sufficient information and warning to help avoid confusion version.
+1. Notification on your desktop when this process is complete, you just keep tabs open while process is running.
+1. **One-Click mode**: Simplify operations with one-click, if you need to import and export all your templates.
 
 ###Note
 
-* *Keep tabs always open when the process is running.*
-* *Only work in forumotion(.com)*
+*Only work in [Forumotion](http://www.forumotion.com/)*
 
 ### Screenshot
 
@@ -69,87 +67,87 @@ Update plugin jsZip, FileSaver.
 
 ### Export
 
-**title**: "Export Template"
+    title: "Export Template"
 
-**tooltip**: "In this table, you can also export [[changed template]] to a *.zip file and save it to your computer.\nTo start, click {{Check}} button to get version information and the list of templates that you want to export. Then click {{Ok}}, wait for few seconds and you are good to go."
+    tooltip: "In this table, you can also export [[changed template]] to a *.zip file and save it to your computer.\nTo start, click {{Check}} button to get version information and the list of templates that you want to export. Then click {{Ok}}, wait for few seconds and you are good to go."
 
-**checkall**: "Pick all"
+    checkall: "Pick all"
 
-**unpublish**: "Waiting Templates"
+    unpublish: "Waiting Templates"
 
-**firsttip**: "Pick categories you need then click {{Check}}."
+    firsttip: "Pick categories you need then click {{Check}}."
 
-**download**: "Downloading your templates. Click here if its take too long!"
+    download: "Downloading your templates. Click here if its take too long!"
 
-**download2**: "Downloading your templates..."
+    download2: "Downloading your templates..."
 
-**notemplate**: "There's no template archive needed"
+    notemplate: "There's no template archive needed"
 
-**sumtemplate**: "The number of template archive needed it's"
+    sumtemplate: "The number of template archive needed it's"
 
-**presssubmit**: "Click {{Ok}} to start!"
+    presssubmit: "Click {{Ok}} to start!"
 
-**pressrefresh**: "Click {{Start over}} to change your options!"
+    pressrefresh: "Click {{Start over}} to change your options!"
 
-**loading**: "Creating Zip file..."
+    loading: "Creating Zip file..."
 
 ### Import
 
-**title**: "Import Template"
+    title: "Import Template"
 
-**tooltip**: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Import) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go."
+    tooltip: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Import) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go."
 
-**choose**: "Open zipped file"
+    choose: "Open zipped file"
 
-**notpublish**: "Not publish Template"
+    notpublish: "Not publish Template"
 
-**firsttip**: "Pick your zipped file then click {{Ok}}."
+    firsttip: "Pick your zipped file then click {{Ok}}."
 
-**notversion**: "Opps! This template require "
+    notversion: "Opps! This template require "
 
-**source**: "Source"
+    source: "Source"
 
-**version**: "Version"
+    version: "Version"
 
-**time**: "Last update"
+    time: "Last update"
 
-**count**: "Template(s)"
+    count: "Template(s)"
 
-**updateAll**: "All done!"
+    updateAll: "All done!"
 
-**loading**: "Updating template..."
+    loading: "Updating template..."
 
 ### Global
 
-**option**: "Options"
+    option: "Options"
 
-**oneclick**: "One-Click mode"
+    simpleclick: "One-Click mode"
 
-**wail**: "Please hold on a second..."
+    wail: "Please hold on a second..."
 
-**notsupport**: "Your browser does not support this application!"
+    notsupport: "Your browser does not support this application!"
 
-**requestlimit**: "Access denied! Progress will start over in a while"
+    requestlimit: "Access denied! Progress will start over in a while"
 
-**reloadtemplate**: "Reload template "
+    reloadtemplate: "Reload template "
 
-**errortemplate**: "Bad template "
+    errortemplate: "Bad template "
 
-**second**: "s."
+    second: "s."
 
-**filtering**: "Template filtering..."
+    filtering: "Template filtering..."
 
-**checkone**: "Pick at least 1 item"
+    checkone: "Pick at least 1 item"
 
 ### Button
 
-**filter**: "Check"
+    filter: "Check"
 
-**refresh**: "Start over"
+    refresh: "Start over"
 
-**submit**: "Ok"
+    submit: "Ok"
 
-**start**: "START"
+    start: "START"
 
 ----------
 
