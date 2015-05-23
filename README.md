@@ -49,9 +49,9 @@ Update plugin jsZip, FileSaver.
 
 **Browser download**: https://www.mozilla.org/firefox
 
-**Addon install**: *Updating...*
+**Addon install**: https://addons.mozilla.org/en-US/firefox/addon/forumotion-backup-templates/
 
-**Video tutorial**: *Updating...*
+**Video tutorial**: https://www.youtube.com/watch?v=jvyc1vfIZ9I
 
 ### Opera
 
