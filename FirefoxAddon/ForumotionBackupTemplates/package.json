@@ -5,7 +5,7 @@
     "description": "Export & Import Forumotion templates",
     "author": "baivong",
     "license": "MPL 2.0",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "homepage": "https://github.com/baivong/ForumotionBackupTemplates",
     "icon": "icon.png",
     "preferences": [{

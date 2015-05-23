@@ -14,7 +14,7 @@ var prefsTab = {};
 function openPrefPage() {
     prefsTab.attach({
         contentScriptWhen: "end",
-        contentScript: 'AddonManager.getAddonByID("' + self.id + '", function(aAddon) {unsafeWindow.gViewController.commands.cmd_showItemDetails.doCommand(aAddon, true);});'
+        contentScript: "AddonManager.getAddonByID('" + self.id + "', function(aAddon) {unsafeWindow.gViewController.commands.cmd_showItemDetails.doCommand(aAddon, true);});"
     });
     // prefsTab.pin();
     prefsTab.activate();
@@ -74,8 +74,8 @@ function handleClick() {
 }
 
 buttons.ActionButton({
-    id: "mozilla-link",
-    label: "Visit Mozilla",
+    id: "forumotion_backup_templates_button",
+    label: "Forumotion Themes management",
     icon: {
         "16": "./icon-16.png",
         "32": "./icon-32.png",

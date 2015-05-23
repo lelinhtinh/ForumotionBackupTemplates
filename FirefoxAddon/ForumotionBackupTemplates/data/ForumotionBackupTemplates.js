@@ -2,7 +2,7 @@
  * jsZip (v2.5.0) By StuartKnightley <http://stuartk.com/jszip>
  * jszip-utils (v0.0.2) By Stuart Knightley, David Duponchel <http://stuk.github.io/jszip-utils>
  * FileSaver (2015-05-07.2) By Eli Grey <http://eligrey.com>
- * ForumotionBackupTemplates (v1.0.1) By Zzbaivong <http://devs.forumvi.com>
+ * ForumotionBackupTemplates (v0.6.2) By Zzbaivong <http://devs.forumvi.com>
  */
 
 /**
@@ -23,7 +23,7 @@ function shownoti(t, opt) {
         setTimeout(notification.close.bind(notification), 5000);
     };
 }
-
+shownoti("Success", "Loaded");
 /**
  * Cấu hình thông báp
  * @param  {String} t Error/Success
@@ -828,7 +828,7 @@ $("#zzImport").on("change", "#importZip", function (evt) {
                         // Đánh dấu Temp không được xuất bản
                         var wailTemp = arrName[1].split("x");
                         var colorName = "#7CBA2C";
-                        wailStatus = true;
+                        var wailStatus = true;
                         if (wailTemp.length === 2) {
                             colorName = "red";
                             wailStatus = false;
