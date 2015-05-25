@@ -9,7 +9,7 @@ This extension will help you export and import of all templates in forumotion qu
 
 ###Note
 
-*Only work in [Forumotion](http://www.forumotion.com/)*
+*Only works with the forums of [Forumotion service](http://www.forumotion.com/)*
 
 ### Screenshot
 
@@ -19,6 +19,22 @@ This extension will help you export and import of all templates in forumotion qu
 
 
 ## What new?
+
+###2.0.1
+
+Updated for Firefox 38.
+
+Created userscript version.
+
+Added onbeforeunload alert.
+
+Removed pin tab in option.
+
+Fixed bug for Vietnamese language.
+
+Change the way open tab when pressing the button.
+
+Check validity of file upload.
 
 ###1.0.1
 
@@ -102,6 +118,8 @@ Update plugin jsZip, FileSaver.
     notpublish: "Not publish Template"
 
     firsttip: "Pick your zipped file then click {{Ok}}."
+
+    notname: "Opps! File name is <<not valid>>."
 
     notversion: "Opps! This template require "
 

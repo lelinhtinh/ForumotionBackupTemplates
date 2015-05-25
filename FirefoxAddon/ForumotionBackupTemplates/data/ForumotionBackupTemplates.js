@@ -2,12 +2,11 @@
  * jsZip (v2.5.0) By StuartKnightley <http://stuartk.com/jszip>
  * jszip-utils (v0.0.2) By Stuart Knightley, David Duponchel <http://stuk.github.io/jszip-utils>
  * FileSaver (2015-05-07.2) By Eli Grey <http://eligrey.com>
- * ForumotionBackupTemplates (v2.0.0) By Zzbaivong <http://devs.forumvi.com>
+ * ForumotionBackupTemplates (v2.0.1) By Zzbaivong <http://devs.forumvi.com>
  */
 
 
-var allowNotification = true,
-    notification;
+var allowNotification = true;
 Notification.requestPermission(function (result) {
     if (result === "denied") {
         allowNotification = false;
@@ -27,14 +26,6 @@ Notification.requestPermission(function (result) {
  */
 if (Notification.permission !== "denied") {
     Notification.requestPermission();
-}
-
-
-/**
- * Tự đóng thông báo sau 5 giây
- */
-function closeNotification() {
-    setTimeout(notification.close.bind(notification), 5000);
 }
 
 
@@ -69,10 +60,11 @@ var lang = {
         },
         im: {
             title: "Nhập Template",
-            tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Import) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+            tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
             choose: "Chọn tập tin lưu trữ",
             notpublish: "Không công khai template",
             firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
+            notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
             notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
             source: "Nguồn",
             version: "Phiên bản",
@@ -83,7 +75,6 @@ var lang = {
         },
         option: "Tùy chọn",
         simpleclick: "Chế độ 1-Click",
-        start: "BẮT ĐẦU",
         wail: "Vui lòng chờ trong giây lát...",
         notsupport: "Trình duyệt của bạn không hỗ trợ ứng dụng này!",
         requestlimit: "Lỗi máy chủ từ chối truy cập! Tiến trình sẽ bắt đầu lại sau",
@@ -95,7 +86,8 @@ var lang = {
         bt: {
             filter: "Kiểm tra",
             refresh: "Làm lại",
-            submit: "Xác nhận"
+            submit: "Xác nhận",
+            start: "BẮT ĐẦU"
         }
     },
     en: {
@@ -115,10 +107,11 @@ var lang = {
         },
         im: {
             title: "Import Template",
-            tooltip: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Import) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go.",
+            tooltip: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Browse...) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go.",
             choose: "Open zipped file",
             notpublish: "Not publish Template",
             firsttip: "Pick your zipped file then click {{Ok}}.",
+            notname: "Opps! File name is <<not valid>>.",
             notversion: "Opps! This template require ",
             source: "Source",
             version: "Version",
@@ -164,11 +157,9 @@ trans = lang[langCode]; // Chọn gói ngôn ngữ
 
 
 if (allowNotification) {
-    notification = new Notification("Backup templates", {
-        tag: "zzfmbackup",
+    new Notification("Backup templates", {
         body: trans.bt.start,
-        icon: goodIcon,
-        onshow: closeNotification
+        icon: goodIcon
     });
 }
 
@@ -179,8 +170,8 @@ if (allowNotification) {
  */
 function showTip(txt) {
     return {
-        html: txt.replace(/{{([^\}\}]+)}}/g, "<span style=\"color:green\">$1</span>").replace(/\[\[([^\]\]]+)\]\]/g, "<span style=\"color:#444\">$1</span>").replace(/\n/g, "<br />"),
-        text: txt.replace(/{{([^\}\}]+)}}/g, "$1").replace(/\[\[([^\]\]]+)\]\]/g, "$1").replace(/<[^>]+>/g, "")
+        html: txt.replace(/{{([^\}\}]+)}}/g, "<span style=\"color:green\">$1</span>").replace(/\[\[([^\]\]]+)\]\]/g, "<span style=\"color:#444\">$1</span>").replace(/<<([^>>]+)>>/g, "<strong>$1</strong>").replace(/\n/g, "<br />"),
+        text: txt.replace(/{{([^\}\}]+)}}/g, "$1").replace(/\[\[([^\]\]]+)\]\]/g, "$1").replace(/<<([^>>]+)>>/g, "$1")
     };
 }
 
@@ -218,6 +209,26 @@ function timeFormat(time) {
 
 var tId = $("a", "#activetab").attr("href").match(/&tid=([^&?]+)/)[1]; // Mã truy cập ACP
 
+var progressIsRun = true;
+function progressIsRunning(e) {
+    var message = "Progress is running.";
+    e.returnValue = message;
+    return message;
+}
+
+function alertUnload() {
+    if (progressIsRun) {
+        $(window).on("beforeunload", progressIsRunning);
+    }
+    progressIsRun = false;
+}
+
+function alertUnloadOff() {
+    if (!progressIsRun) {
+        $(window).off("beforeunload", progressIsRunning);
+    }
+    progressIsRun = true;
+}
 
 /**
  * Hiển thị ghi chú kèm biểu tượng
@@ -294,11 +305,9 @@ function requestLimit(exim, time, se, temp, Id, callback) {
     noti(trans.errortemplate + temp + "!", "error", exim);
     noti(trans.requestlimit + " <span id=\"" + Id + "\" style=\"color:#FF0080\">" + time + "</span> " + trans.second, "error", exim);
     if (allowNotification) {
-        notification = new Notification("Error", {
-            tag: "zzfmbackup",
+        new Notification("Error", {
             body: trans.requestlimit + " " + time + " " + trans.second,
-            icon: goodIcon,
-            onshow: closeNotification
+            icon: badIcon
         });
     }
     // Bắt đầu đếm ngược
@@ -369,13 +378,13 @@ function exportTemp(n) {
             $("#refreshTemp").show();
 
             if (allowNotification) {
-                notification = new Notification("Success", {
-                    tag: "zzfmbackup",
+                new Notification("Success", {
                     body: trans.ex.download2,
-                    icon: goodIcon,
-                    onshow: closeNotification
+                    icon: goodIcon
                 });
             }
+
+            alertUnloadOff();
         }
     }).fail(function () { // Xử lý khi tải bị lỗi
 
@@ -421,13 +430,13 @@ function importEnd(m, bkLeg, nopick) {
         noti(trans.im.updateAll, "success", true);
         scrollGoto("zzImport");
         if (allowNotification) {
-            notification = new Notification("Success", {
-                tag: "zzfmbackup",
+            new Notification("Success", {
                 body: trans.im.updateAll,
-                icon: goodIcon,
-                onshow: closeNotification
+                icon: goodIcon
             });
         }
+
+        alertUnloadOff();
     }
 }
 
@@ -625,7 +634,7 @@ $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1&t
 });
 
 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
-$("blockquote").after("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
+$("blockquote").after("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
 
 // Tạo danh sách các nhóm Temp trong khu vực Tải xuống
 menuTemp();
@@ -647,10 +656,10 @@ $(":button", "#zzBackup").click(function () {
 
 // Lấy danh sách các Temp đã chỉnh sửa
 $("#testTemp").click(function () {
-
     $("#exportWait, #exportOne, #exportStart").prop("disabled", true);
     arrTest = [];
     if ($(".catTemp:checked").length) { // Nếu đã chọn nhóm Temp cần kiểm tra
+        alertUnload();
 
         $(this).hide();
         $("#refreshTemp, #exportTemp").show();
@@ -666,6 +675,8 @@ $("#testTemp").click(function () {
     } else { // Nếu chưa chọn nhóm Temp cần kiểm tra
 
         noti(trans.checkone, "error");
+
+        alertUnloadOff();
     }
 });
 
@@ -679,6 +690,8 @@ $("#refreshTemp").click(function () {
     $("#exportAll, #exportWait").prop("checked", false);
     $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
     noti(trans.ex.firsttip, "info");
+
+    alertUnloadOff();
 });
 
 // Bắt đầu tải xuống
@@ -687,7 +700,10 @@ $("#exportTemp").click(function () {
 
         $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
         noti(trans.checkone, "error");
+
+        alertUnloadOff();
     } else {
+        alertUnload();
 
         $(".cusTemp:checked").each(function () {
             var cus = [];
@@ -724,7 +740,11 @@ noti(trans.im.firsttip, "info", true);
 $("#importTemp").click(function () {
     if (!$(".cusTemp2:checked").length) {
         noti(trans.checkone, "error", true);
+
+        alertUnloadOff();
     } else {
+        alertUnload();
+
         $(this).hide();
         noti(trans.wail, "load", true);
         replaceIcon(".cusTemp2:not(:checked), .catTemp2:not(:checked)", "disable");
@@ -734,81 +754,120 @@ $("#importTemp").click(function () {
     }
 });
 
-var $result = $("#readerTemp");
+
+var $result = $("#readerTemp"),
+    vaild = true;
+
+/**
+ * Thực hiện khi phát hiện tên tập tin không hợp lệ
+ */
+function notVaildName() {
+    vaild = false;
+    scrollGoto("zzImport");
+    $("#importTemp").hide();
+
+    noti(trans.im.notname, "error", true);
+    if (allowNotification) {
+        new Notification("Error", {
+            body: showTip(trans.im.notname).text,
+            icon: badIcon
+        });
+    }
+
+    alertUnloadOff();
+}
 
 // Tải lên tệp zip từ máy tính
 $("#zzImport").on("change", "#importZip", function (evt) {
+    alertUnload();
 
     $("#importTemp").show();
     scrollGoto("zzImport");
-    $("#importPublish").prop("checked", false);
     $result.empty();
     var files = evt.target.files[0];
     var reader = new FileReader();
 
     reader.onload = (function (theFile) {
+
         return function (e) {
 
             // Phân tích tên file để lấy ra thông số cần thiết
-            var backup = theFile.name.split(".");
-            var forum = theFile.name.match(/^\w+\.\d+\.(.+)\.zip$/)[1];
+            // invision.1432416686.devs.forumvi.com.zip
+            var matchZip = /^(invision|punbb|prosilver|subsilver)\.(\d{10})\.(([\w\d\-]+\.)?([\w\d\-]+\.)\w{2,4})\.zip$/;
+            var nameZip = theFile.name;
+            if (!matchZip.test(nameZip)) { // Nếu tệp không hợp lệ
+                notVaildName();
 
-            try {
+            } else {
+                var backup = nameZip.match(matchZip);
 
-                // Kiểm tra phiên bản Forumotion
-                if (backup[0] !== forumVersion) {
-                    noti(trans.im.notversion + " <strong>" + verName[backup[0]] + "</strong>.", "error", true);
-                    if (allowNotification) {
-                        notification = new Notification("Error", {
-                            tag: "zzfmbackup",
-                            body: trans.im.notversion + " " + verName[backup[0]],
-                            icon: goodIcon,
-                            onshow: closeNotification
-                        });
-                    }
-                } else {
-                    var zipImport = new JSZip(e.target.result); // Phân tích tệp zip
+                try {
 
-                    noti("<strong>" + trans.im.source + "</strong>: <a href=\"http://" + forum + "\" target=\"_blank\">" + forum + "</a>\n<strong>" + trans.im.version + "</strong>: " + verName[backup[0]] + "\n<strong>" + trans.im.time + "</strong>: " + timeFormat(1E3 * parseInt(backup[1], 10)) + "\n<strong>" + trans.im.count + "</strong>: " + Object.keys(zipImport.files).length, false, true);
-
-                    zipTemp = [];
-                    $.each(zipImport.files, function (index, zipEntry) { // Lấy dữ liệu các tệp bên trong
-
-                        // Tạo nhóm Temp
-                        var arrName = zipEntry.name.split(/\/|\./);
-                        if (!$(".catTemp2[value=\"" + arrName[0] + "\"]").length) {
-                            $result.append("<div class=\"hasTemp2\"><label><input class=\"catTemp2\" type=\"checkbox\" value=\"" + arrName[0] + "\" checked />&nbsp;<strong style=\"color: #0014FF\">" + listTempGroup[arrName[0]] + "</strong></label><ol class=\"" + arrName[0] + "\"></ol></div>");
+                    // Kiểm tra phiên bản Forumotion
+                    if (backup[1] !== forumVersion) {
+                        noti(trans.im.notversion + " <<" + verName[backup[1]] + ">>.", "error", true);
+                        if (allowNotification) {
+                            new Notification("Error", {
+                                body: trans.im.notversion + " " + verName[backup[1]],
+                                icon: badIcon
+                            });
                         }
 
-                        // Đánh dấu Temp không được xuất bản
-                        var wailTemp = arrName[1].split("x");
-                        var colorName = "#7CBA2C";
-                        var wailStatus = true;
-                        if (wailTemp.length === 2) {
-                            colorName = "red";
-                            wailStatus = false;
-                        }
+                        alertUnloadOff();
+                    } else {
+                        var zipImport = new JSZip(e.target.result); // Phân tích tệp zip
 
-                        // Thêm Temp vào nhóm tương ứng
-                        $("<li><label><input class=\"cusTemp2\" type=\"checkbox\" value=\"" + wailTemp[0] + "\" checked />&nbsp;<span style=\"color:" + colorName + "\">" + arrName[2] + "</span></label></li>").appendTo(".hasTemp2 ." + arrName[0]);
+                        noti("<<" + trans.im.source + ">>: <a href=\"http://" + backup[3] + "\" target=\"_blank\">" + backup[3] + "</a>\n<<" + trans.im.version + ">>: " + verName[backup[1]] + "\n<<" + trans.im.time + ">>: " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n<<" + trans.im.count + ">>: " + Object.keys(zipImport.files).length, false, true);
 
-                        // Tạo danh sách dữ liệu các Temp
-                        zipTemp.push({
-                            wail: wailStatus,
-                            l: arrName[0],
-                            t: wailTemp[0],
-                            tpl_name: arrName[2],
-                            template: zipEntry.asText()
+                        zipTemp = [];
+                        $.each(zipImport.files, function (index, zipEntry) { // Lấy dữ liệu các tệp bên trong
+
+                            // Phân tích tên file để lấy ra thông số cần thiết
+                            // main/110.index_body.txt
+                            var nameFile = zipEntry.name;
+                            if (!/^(main|portal|gallery|calendar|group|post|moderation|profil|mobile)\/\d{3,4}x?\.\w+\.txt$/.test(nameFile)) { // Nếu tệp không hợp lệ
+                                $("#readerTemp").empty();
+                                notVaildName();
+
+                                return false;
+                            }
+
+                            // Tạo nhóm Temp
+                            var arrName = nameFile.split(/\/|\./);
+                            if (!$(".catTemp2[value=\"" + arrName[0] + "\"]").length) {
+                                $result.append("<div class=\"hasTemp2\"><label><input class=\"catTemp2\" type=\"checkbox\" value=\"" + arrName[0] + "\" checked />&nbsp;<strong style=\"color: #0014FF\">" + listTempGroup[arrName[0]] + "</strong></label><ol class=\"" + arrName[0] + "\"></ol></div>");
+                            }
+
+                            // Đánh dấu Temp không được xuất bản
+                            var wailTemp = arrName[1].split("x");
+                            var colorName = "#7CBA2C";
+                            var wailStatus = true;
+                            if (wailTemp.length === 2) {
+                                colorName = "red";
+                                wailStatus = false;
+                            }
+
+                            // Thêm Temp vào nhóm tương ứng
+                            $("<li><label><input class=\"cusTemp2\" type=\"checkbox\" value=\"" + wailTemp[0] + "\" checked />&nbsp;<span style=\"color:" + colorName + "\">" + arrName[2] + "</span></label></li>").appendTo(".hasTemp2 ." + arrName[0]);
+
+                            // Tạo danh sách dữ liệu các Temp
+                            zipTemp.push({
+                                wail: wailStatus,
+                                l: arrName[0],
+                                t: wailTemp[0],
+                                tpl_name: arrName[2],
+                                template: zipEntry.asText()
+                            });
                         });
-                    });
 
-                    if ($("#importOne").prop("checked")) {
-                        $("#importTemp").click();
+                        if ($("#importOne").prop("checked") && vaild) {
+                            $("#importTemp").click();
+                        }
                     }
+                } catch (es) { // Lỗi trình duyệt không hỗ trợ
+                    noti(trans.notsupport, "error", true);
+                    // console.log(es.message);
                 }
-            } catch (es) { // Lỗi trình duyệt không hỗ trợ
-                noti(trans.notsupport, "error", true);
-                // console.log(es.message);
             }
         };
     })(files);
@@ -839,12 +898,16 @@ $(".oneMode").on("change", function () {
 });
 
 $("#importStart").click(function () {
+    alertUnload();
+
     $("#importZip").click();
 });
 
 
 $("#exportStart").click(function () {
+    alertUnload();
+
     $("#refreshTemp").click();
-    $("#exportAll, .catTemp").prop("checked", true);
+    $("#exportAll, #exportWait, .catTemp").prop("checked", true);
     $("#testTemp").click();
 });

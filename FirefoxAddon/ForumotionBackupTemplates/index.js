@@ -1,4 +1,4 @@
-require("sdk/preferences/service").set("extensions.sdk.console.logLevel", "debug");
+// require("sdk/preferences/service").set("extensions.sdk.console.logLevel", "debug");
 
 
 var tabs = require("sdk/tabs");
@@ -9,23 +9,21 @@ var pageMod = require("sdk/page-mod");
 var buttons = require("sdk/ui/button/action");
 
 var patt = /http:\/\/(www\.)?([^\/\s\n\?\&\:\+\%\!\#\.\@]+\.){1,2}\w{2,4}/; // Lọc tên miền trong URL nhập vào
-var listTabsId = [],
-    activeTabId = 0,
-    prefsTab = {},
-    backupTab = {};
+
+var listTabs = [],
+    listTabsURL = [],
+    prefsTabIndex = 0,
+    backupTabIndex = 0;
 
 /**
  * Mở trang tùy chỉnh của addon Forumotion Backup Templates
  */
-function openPrefPage() {
-    prefsTab.attach({
+function openPrefPage(tab) {
+    tab.attach({
         contentScriptWhen: "end",
         contentScript: "AddonManager.getAddonByID('" + self.id + "', function(aAddon) {unsafeWindow.gViewController.commands.cmd_showItemDetails.doCommand(aAddon, true);});"
     });
-
-    if (prefsTab.id !== activeTabId.id) {
-        prefsTab.activate();
-    }
+    tab.activate();
 }
 
 
@@ -33,61 +31,57 @@ function openPrefPage() {
  * Xử lý khi click vào nút chức năng
  */
 function handleClick() {
-    activeTabId = tabs.activeTab.id; // Lấy id tab đang mở
 
-    // Cập nhật danh sách tab id
-    listTabsId = [];
+    // Cập nhật danh sách tab và url của nó
+    listTabs = [];
+    listTabsURL = [];
+
     for (let tab of tabs) {
-        listTabsId.push(tab.id);
+        listTabs.push(tab);
+        listTabsURL.push(tab.url);
     }
 
     var setURL = prefs.fmURL;
     // console.log(setURL);
+
     if (!patt.test(setURL)) { // Nếu thiết lập URL chưa đúng hoặc chưa thiết lập
         prefs.fmURL = "";
+        prefsTabIndex = listTabsURL.indexOf("about:addons"); // Lấy index của tab addon
 
-        if (listTabsId.indexOf(prefsTab.id) === -1) { // Không có tab thiết lập URL
+        if (prefsTabIndex === -1) { // Không có tab addon
+
             tabs.open({
                 url: "about:addons",
                 onReady: function (tab) {
-                    prefsTab = tab;
-                    openPrefPage();
+                    openPrefPage(tab);
                 }
             });
-        } else {
-            openPrefPage();
-        }
-
-    } else {
-
-        if (listTabsId.indexOf(prefsTab.id) !== -1) { // Nếu tab thiết lập URL đang mở
-            prefsTab.close();
-        }
-
-        if (listTabsId.indexOf(backupTab.id) === -1) { // Không có tab Themes management
-
-            setURL = setURL.match(patt)[0]; // Cập nhật URL, chỉ lấy phần protocol + host
-
-            tabs.open({
-                url: setURL + "/admin/index.forum?mode=export&part=themes&sub=styles",
-                onReady: function (tab) {
-                    backupTab = tab;
-                    if (prefs.fmPin) {
-                        backupTab.pin();
-                    }
-                }
-            });
-            prefs.fmURL = setURL;
 
         } else {
-            var backupURL = setURL + "/admin/index.forum?mode=export&part=themes&sub=styles";
-            if (backupTab.url.indexOf(backupURL) !== 0) {
-                backupTab.url = backupURL;
-            }
-            backupTab.activate();
-            if (prefs.fmPin) {
-                backupTab.pin();
-            }
+
+            openPrefPage(listTabs[prefsTabIndex]);
+
+        }
+
+    } else { // Nếu đã thiết lập URL đúng
+
+        setURL = setURL.match(patt)[0];
+        setURL = setURL.match(patt)[0];
+
+        prefs.fmURL = setURL;
+
+        setURL = setURL + "/admin/index.forum?mode=export&part=themes&sub=styles";
+
+        backupTabIndex = listTabsURL.indexOf(setURL); // Lấy index của tab backup
+
+        if (backupTabIndex === -1) { // Không có tab backup
+
+            tabs.open(setURL);
+
+        } else {
+
+            listTabs[backupTabIndex].activate();
+
         }
 
     }
