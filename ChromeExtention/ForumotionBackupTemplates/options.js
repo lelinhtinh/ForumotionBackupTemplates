@@ -14,10 +14,16 @@ function save_options(e) {
         status.textContent = "Options saved!";
         setTimeout(function () {
             status.textContent = '';
-            chrome.tabs.create({
-                "url": fmurl + "/admin/index.forum?mode=export&part=themes&sub=styles",
-                "active": true
+            chrome.tabs.query({
+                active: true
+            }, function (tab) {
+                chrome.tabs.create({
+                    "url": fmurl + "/admin/index.forum?mode=export&part=themes&sub=styles",
+                    "active": true
+                });
+                chrome.tabs.remove(tab[0].id);
             });
+
         }, 750);
     });
 }

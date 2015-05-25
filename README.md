@@ -75,6 +75,16 @@ Update plugin jsZip, FileSaver.
 
 **Video tutorial**: https://www.youtube.com/watch?v=0nhHRSeWWRI
 
+### Userscript version
+
+First, install userscript manager for your browser:
+
+* **Tampermonkey** for Google Chrome: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
+* **Greasemonkey** for Firefox: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
+* **Violent monkey** for Opera: https://addons.opera.com/en/extensions/details/violent-monkey/
+
+Then, install userscript **Forumotion Backup Templates**: http://bit.ly/ForumotionBackupTemplates
+
 ----------
 
 ## Translation
