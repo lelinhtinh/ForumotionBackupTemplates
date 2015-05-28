@@ -10,8 +10,12 @@
     "quotmark": "double",
     "unused": true,
     "node": true,
+    "browser": true,
+    "jquery": true,
     "globals": {
-        "$": false,
-        "jQuery": false
+        "Notification": false,
+        "JSZip": false,
+        "saveAs": false,
+        "fmbackup": false
     }
 }
