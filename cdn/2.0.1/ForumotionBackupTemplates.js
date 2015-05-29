@@ -14,7 +14,7 @@ fmbackup = function () {
         setIcons = {};
 
     var version,
-        htmlPage;
+        page_id;
 
     // ------------------------------------ //
 
@@ -619,11 +619,7 @@ fmbackup = function () {
             var $activetab = $(data).find("#activetab"),
                 $user_connected = $(data).find("#user_connected");
 
-            alert($activetab.length !== 0);
-            alert($user_connected.length !== 0);
-            alert(!isNaN(htmlPage));
-
-            if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(htmlPage)) {
+            if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(page_id)) {
 
                 forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
@@ -877,7 +873,7 @@ fmbackup = function () {
                     $("#testTemp").click();
                 });
             } else {
-                location.replace("/login?redirect=/h" + htmlPage + "-fmbackup");
+                location.replace("/login?redirect=/h" + page_id + "-fmbackup");
             }
         });
     };
@@ -886,6 +882,7 @@ fmbackup = function () {
         translation: translation,
         icons: icons,
         version: version,
+        page_id: page_id
         init: init
     };
 
