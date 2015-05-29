@@ -49,13 +49,6 @@ fmbackup = function () {
         return Math.floor((new Date()).getTime() / 1000);
     }
 
-    if (allowNotification) {
-        new Notification("Backup templates", {
-            body: trans.bt.start,
-            icon: setIcons.good
-        });
-    }
-
     /**
      * Chuyển các ký hiệu trong gói ngôn ngữ sang 2 dạng html và text
      * @param  {String} txt Nội dung ghi chú
