@@ -1,4 +1,4 @@
-fmbackup.translation({
+fmbackup.translation = {
     langcode: "en",
     ex: {
         title: "Export Template",
@@ -46,6 +46,8 @@ fmbackup.translation({
         submit: "Ok",
         start: "START",
     }
-});
-fmbackup.version("2.0.1");
+};
+
+fmbackup.version = "2.0.1";
+
 fmbackup.init();

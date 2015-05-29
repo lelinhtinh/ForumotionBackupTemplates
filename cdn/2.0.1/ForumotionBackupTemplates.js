@@ -7,85 +7,14 @@
 
 fmbackup = function () {
 
-    var translation = function (trans) {
-        return $.extend({}, {
-            langcode: "vi",
-            ex: {
-                title: "Xuất Template",
-                tooltip: "Trong bảng này, bạn có thể xuất tất cả [[template đã được thay đổi]] của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút {{Kiểm tra}} để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
-                checkall: "Chọn tất cả",
-                unpublish: "Template chưa công khai",
-                firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn {{Kiểm tra}}.",
-                download: "Tập tin đang được tải xuống. Nhấn vào đây nếu bạn đợi quá lâu.",
-                download2: "Template của bạn đã được tải xong.",
-                notemplate: "Không có template cần lưu trữ.",
-                sumtemplate: "Tổng số template cần lưu trữ là",
-                presssubmit: "Nhấn {{Xác nhận}} để bắt đầu!",
-                pressrefresh: "Nhấn {{Làm lại}} để chọn mục khác!",
-                loading: "Đang tạo tập tin lưu trữ..."
-            },
-            im: {
-                title: "Nhập Template",
-                tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
-                choose: "Chọn tập tin lưu trữ",
-                notpublish: "Không công khai template",
-                firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
-                notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
-                notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
-                source: "Nguồn",
-                version: "Phiên bản",
-                time: "Lưu lúc",
-                count: "Số template",
-                updateAll: "Tất cả template đã được cập nhật.",
-                loading: "Đang cập nhật template..."
-            },
-            option: "Tùy chọn",
-            simpleclick: "Chế độ 1-Click",
-            wail: "Vui lòng chờ trong giây lát...",
-            notsupport: "Trình duyệt của bạn không hỗ trợ ứng dụng này!",
-            requestlimit: "Lỗi máy chủ từ chối truy cập! Tiến trình sẽ bắt đầu lại sau",
-            reloadtemplate: "Tải lại template ",
-            errortemplate: "Lỗi template ",
-            second: "giây.",
-            filtering: "Đang kiểm tra...",
-            checkone: "Bạn phải chọn ít nhất 1 mục!",
-            progressrun: "Tiến trình đang xử lý.",
-            bt: {
-                filter: "Kiểm tra",
-                refresh: "Làm lại",
-                submit: "Xác nhận",
-                start: "BẮT ĐẦU"
-            }
-        }, trans);
-    };
+    var translation = {},
+        trans = {};
 
-    console.log(translation);
+    var icons = {},
+        setIcons = {};
 
-    var icons = function (setIcons) {
-        return $.extend({}, {
-            good: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/good.png",
-            bad: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/bad.png",
-            load: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif",
-            info: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/info.png",
-            error: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/error.gif",
-            success: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/success.gif",
-            disable: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
-        }, setIcons);
-    };
-
-    console.log(icons);
-
-    var version = function (ver) {
-        return ver || "latest";
-    };
-
-    console.log(version);
-
-    var htmlPage = function (pageId) {
-        return isNaN(pageId) ? false : pageId;
-    };
-
-    console.log(htmlPage);
+    var version,
+        htmlPage;
 
     // ------------------------------------ //
 
@@ -122,8 +51,8 @@ fmbackup = function () {
 
     if (allowNotification) {
         new Notification("Backup templates", {
-            body: translation.bt.start,
-            icon: icons.good
+            body: trans.bt.start,
+            icon: setIcons.good
         });
     }
 
@@ -164,7 +93,7 @@ fmbackup = function () {
             }[a[1]],
             yyyy = a[3],
             showTime = mm + "/" + dd + "/" + yyyy + " " + a[4];
-        if (translation.langcode === "vi") {
+        if (trans.langcode === "vi") {
             showTime = dd + "-" + mm + "-" + yyyy + " " + a[4];
         }
         return showTime;
@@ -176,7 +105,7 @@ fmbackup = function () {
     var progressIsRun = true;
 
     function progressIsRunning(e) {
-        var message = translation.progressrun;
+        var message = trans.progressrun;
         e.returnValue = message;
         return message;
     }
@@ -267,12 +196,12 @@ fmbackup = function () {
 
         replaceIcon(se, "error"); // Đổi trạng thái
 
-        noti(translation.errortemplate + temp + "!", "error", exim);
-        noti(translation.requestlimit + " <span id=\"" + Id + "\" style=\"color:#FF0080\">" + time + "</span> " + translation.second, "error", exim);
+        noti(trans.errortemplate + temp + "!", "error", exim);
+        noti(trans.requestlimit + " <span id=\"" + Id + "\" style=\"color:#FF0080\">" + time + "</span> " + trans.second, "error", exim);
         if (allowNotification) {
             new Notification("Error", {
-                body: translation.requestlimit + " " + time + " " + translation.second,
-                icon: icons.bad
+                body: trans.requestlimit + " " + time + " " + trans.second,
+                icon: setIcons.bad
             });
         }
         // Bắt đầu đếm ngược
@@ -284,7 +213,7 @@ fmbackup = function () {
                 if (result <= 0) {
                     clearInterval(resum);
                     replaceIcon(se, "load"); // Đổi trạng thái
-                    noti(translation.reloadtemplate + temp + "!", "info", exim);
+                    noti(trans.reloadtemplate + temp + "!", "info", exim);
                     callback(); // Xử lý khi hết thời gian chờ
                 }
             }, 1000);
@@ -313,7 +242,7 @@ fmbackup = function () {
 
             zip.file(item[0] + "/" + item[1] + "." + item[2] + ".txt", $(data).find("#template").val()); // Lưu thông tin Temp đã tải vào tệp zip
 
-            noti("(" + m + "/" + bkLeg + ") " + translation.ex.loading, "load");
+            noti("(" + m + "/" + bkLeg + ") " + trans.ex.loading, "load");
             replaceIcon(".cusTemp[value='" + item[1] + "']", "success");
 
             if (m < bkLeg) { // Nếu vẫn còn Temp trong danh sách
@@ -337,15 +266,15 @@ fmbackup = function () {
 
                 $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
 
-                noti("<a href=\"" + window.URL.createObjectURL(blob) + "\" download=\"" + zipName + "\">" + translation.ex.download + "</a>", "success");
+                noti("<a href=\"" + window.URL.createObjectURL(blob) + "\" download=\"" + zipName + "\">" + trans.ex.download + "</a>", "success");
 
                 scrollGoto("zzExport");
                 $("#refreshTemp").show();
 
                 if (allowNotification) {
                     new Notification("Success", {
-                        body: translation.ex.download2,
-                        icon: icons.good
+                        body: trans.ex.download2,
+                        icon: setIcons.good
                     });
                 }
 
@@ -369,7 +298,7 @@ fmbackup = function () {
      */
     function importSuccess(m, bkLeg, tempId) {
         replaceIcon(".cusTemp2[value='" + tempId + "']", "success");
-        noti("(" + $(".hasTemp2 li .icon_success").length + "/" + $(".cusTemp2:checked").length + ") " + translation.im.loading, "load", true);
+        noti("(" + $(".hasTemp2 li .icon_success").length + "/" + $(".cusTemp2:checked").length + ") " + trans.im.loading, "load", true);
     }
 
 
@@ -392,12 +321,12 @@ fmbackup = function () {
             }
         } else { // Khi đã tải lên tất cả Temp
             $("#importPublish, #importZip, #importOne, #importStart").prop("disabled", false);
-            noti(translation.im.updateAll, "success", true);
+            noti(trans.im.updateAll, "success", true);
             scrollGoto("zzImport");
             if (allowNotification) {
                 new Notification("Success", {
-                    body: translation.im.updateAll,
-                    icon: icons.good
+                    body: trans.im.updateAll,
+                    icon: setIcons.good
                 });
             }
 
@@ -533,14 +462,14 @@ fmbackup = function () {
 
             } else { // Không có tem chỉnh sửa
                 $this.prop("checked", false);
-                showResult = "<li><img src=\"" + icons.disable + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" /> <em>" + translation.ex.notemplate + "</em></li>";
+                showResult = "<li><img src=\"" + setIcons.disable + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" /> <em>" + trans.ex.notemplate + "</em></li>";
             }
 
             catWrap.attr("class", status);
             $("#listTemp ." + cat).html(showResult);
 
             replaceIcon(se, "success");
-            noti("(" + m + "/" + bkLeg + ") " + translation.filtering, "load");
+            noti("(" + m + "/" + bkLeg + ") " + trans.filtering, "load");
 
             if (m < bkLeg) { // Nếu còn nhóm Temp trong danh sách
 
@@ -552,12 +481,12 @@ fmbackup = function () {
 
                 // Đếm tổng số Temp và thông báo
                 var sumTemp = $(".cusTemp").length;
-                var mess = translation.ex.presssubmit;
+                var mess = trans.ex.presssubmit;
                 if (sumTemp === 0) {
-                    mess = translation.ex.pressrefresh;
+                    mess = trans.ex.pressrefresh;
                     $("#exportTemp").hide();
                 }
-                noti(translation.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
+                noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
 
                 if ($("#exportOne").prop("checked")) {
                     $("#exportTemp").click();
@@ -612,11 +541,11 @@ fmbackup = function () {
         scrollGoto("zzImport");
         $("#importTemp").hide();
 
-        noti(translation.im.notname, "error", true);
+        noti(trans.im.notname, "error", true);
         if (allowNotification) {
             new Notification("Error", {
-                body: showTip(translation.im.notname).text,
-                icon: icons.bad
+                body: showTip(trans.im.notname).text,
+                icon: setIcons.bad
             });
         }
 
@@ -626,13 +555,77 @@ fmbackup = function () {
 
     var init = function () {
 
+        trans = $.extend({}, {
+            langcode: "vi",
+            ex: {
+                title: "Xuất Template",
+                tooltip: "Trong bảng này, bạn có thể xuất tất cả [[template đã được thay đổi]] của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút {{Kiểm tra}} để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+                checkall: "Chọn tất cả",
+                unpublish: "Template chưa công khai",
+                firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn {{Kiểm tra}}.",
+                download: "Tập tin đang được tải xuống. Nhấn vào đây nếu bạn đợi quá lâu.",
+                download2: "Template của bạn đã được tải xong.",
+                notemplate: "Không có template cần lưu trữ.",
+                sumtemplate: "Tổng số template cần lưu trữ là",
+                presssubmit: "Nhấn {{Xác nhận}} để bắt đầu!",
+                pressrefresh: "Nhấn {{Làm lại}} để chọn mục khác!",
+                loading: "Đang tạo tập tin lưu trữ..."
+            },
+            im: {
+                title: "Nhập Template",
+                tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+                choose: "Chọn tập tin lưu trữ",
+                notpublish: "Không công khai template",
+                firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
+                notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
+                notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
+                source: "Nguồn",
+                version: "Phiên bản",
+                time: "Lưu lúc",
+                count: "Số template",
+                updateAll: "Tất cả template đã được cập nhật.",
+                loading: "Đang cập nhật template..."
+            },
+            option: "Tùy chọn",
+            simpleclick: "Chế độ 1-Click",
+            wail: "Vui lòng chờ trong giây lát...",
+            notsupport: "Trình duyệt của bạn không hỗ trợ ứng dụng này!",
+            requestlimit: "Lỗi máy chủ từ chối truy cập! Tiến trình sẽ bắt đầu lại sau",
+            reloadtemplate: "Tải lại template ",
+            errortemplate: "Lỗi template ",
+            second: "giây.",
+            filtering: "Đang kiểm tra...",
+            checkone: "Bạn phải chọn ít nhất 1 mục!",
+            progressrun: "Tiến trình đang xử lý.",
+            bt: {
+                filter: "Kiểm tra",
+                refresh: "Làm lại",
+                submit: "Xác nhận",
+                start: "BẮT ĐẦU"
+            }
+        }, translation);
+
+        setIcons = $.extend({}, {
+            good: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/good.png",
+            bad: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/bad.png",
+            load: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif",
+            info: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/info.png",
+            error: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/error.gif",
+            success: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/success.gif",
+            disable: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
+        }, icons);
+
+        if (!version) {
+            version = "latest";
+        }
+
         // Cập nhật thông tin phiên bản Forumotion
         $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", function (data) {
 
 
             var $activetab = $(data).find("#activetab"),
                 $user_connected = $(data).find("#user_connected");
-            if ($activetab.length && $user_connected.length && htmlPage) {
+            if ($activetab.length && $user_connected.length && !isNaN(htmlPage)) {
 
                 forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
@@ -640,12 +633,12 @@ fmbackup = function () {
 
 
                 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
-                $("#templates").html("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + translation.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(translation.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + translation.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + translation.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + translation.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + translation.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + translation.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + translation.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + translation.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + translation.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + translation.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(translation.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + translation.im.choose + "</label><br /><br /><span class=\"backupOption\">" + translation.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + translation.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + translation.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + translation.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + translation.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
+                $("#templates").html("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
 
                 // Tạo danh sách các nhóm Temp trong khu vực Tải xuống
                 menuTemp();
 
-                noti(translation.ex.firsttip, "info");
+                noti(trans.ex.firsttip, "info");
 
 
                 // EXPORT TEMPLATE
@@ -671,7 +664,7 @@ fmbackup = function () {
                         $("#refreshTemp, #exportTemp").show();
 
                         replaceIcon(".catTemp:not(:checked)", "disable");
-                        noti(translation.wail, "load");
+                        noti(trans.wail, "load");
 
                         $(".catTemp:checked").each(function () {
                             arrTest.push($(this).val());
@@ -680,7 +673,7 @@ fmbackup = function () {
                         testTemp(0);
                     } else { // Nếu chưa chọn nhóm Temp cần kiểm tra
 
-                        noti(translation.checkone, "error");
+                        noti(trans.checkone, "error");
 
                         alertUnloadOff();
                     }
@@ -695,7 +688,7 @@ fmbackup = function () {
                     menuTemp();
                     $("#exportAll, #exportWait").prop("checked", false);
                     $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
-                    noti(translation.ex.firsttip, "info");
+                    noti(trans.ex.firsttip, "info");
 
                     alertUnloadOff();
                 });
@@ -705,7 +698,7 @@ fmbackup = function () {
                     if (!$(".cusTemp:checked").length) { // Nếu không có Temp chọn tải xuống
 
                         $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
-                        noti(translation.checkone, "error");
+                        noti(trans.checkone, "error");
 
                         alertUnloadOff();
                     } else {
@@ -725,25 +718,25 @@ fmbackup = function () {
                         $(".cusTemp").prop("disabled", true);
                         exportTemp(0);
 
-                        noti(translation.wail, "load");
+                        noti(trans.wail, "load");
                         replaceIcon(".cusTemp:not(:checked)", "disable");
                     }
                 });
 
                 // IMPORT TEMPLATE
-                noti(translation.im.firsttip, "info", true);
+                noti(trans.im.firsttip, "info", true);
 
                 // Bắt đầu Tải lên
                 $("#importTemp").click(function () {
                     if (!$(".cusTemp2:checked").length) {
-                        noti(translation.checkone, "error", true);
+                        noti(trans.checkone, "error", true);
 
                         alertUnloadOff();
                     } else {
                         alertUnload();
 
                         $(this).hide();
-                        noti(translation.wail, "load", true);
+                        noti(trans.wail, "load", true);
                         replaceIcon(".cusTemp2:not(:checked), .catTemp2:not(:checked)", "disable");
                         replaceIcon(".catTemp2:checked", "success");
                         $(".cusTemp2, #importPublish, #importZip, #importOne, #importStart").prop("disabled", true);
@@ -779,11 +772,11 @@ fmbackup = function () {
 
                                     // Kiểm tra phiên bản Forumotion
                                     if (backup[1] !== forumVersion) {
-                                        noti(translation.im.notversion + " <<" + verName[backup[1]] + ">>.", "error", true);
+                                        noti(trans.im.notversion + " <<" + verName[backup[1]] + ">>.", "error", true);
                                         if (allowNotification) {
                                             new Notification("Error", {
-                                                body: translation.im.notversion + " " + verName[backup[1]],
-                                                icon: icons.bad
+                                                body: trans.im.notversion + " " + verName[backup[1]],
+                                                icon: setIcons.bad
                                             });
                                         }
 
@@ -791,7 +784,7 @@ fmbackup = function () {
                                     } else {
                                         var zipImport = new JSZip(e.target.result); // Phân tích tệp zip
 
-                                        noti("<<" + translation.im.source + ">>: <a href=\"http://" + backup[3] + "\" target=\"_blank\">" + backup[3] + "</a>\n<<" + translation.im.version + ">>: " + verName[backup[1]] + "\n<<" + translation.im.time + ">>: " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n<<" + translation.im.count + ">>: " + Object.keys(zipImport.files).length, false, true);
+                                        noti("<<" + trans.im.source + ">>: <a href=\"http://" + backup[3] + "\" target=\"_blank\">" + backup[3] + "</a>\n<<" + trans.im.version + ">>: " + verName[backup[1]] + "\n<<" + trans.im.time + ">>: " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n<<" + trans.im.count + ">>: " + Object.keys(zipImport.files).length, false, true);
 
                                         zipTemp = [];
                                         $.each(zipImport.files, function (index, zipEntry) { // Lấy dữ liệu các tệp bên trong
@@ -839,7 +832,7 @@ fmbackup = function () {
                                         }
                                     }
                                 } catch (es) { // Lỗi trình duyệt không hỗ trợ
-                                    noti(translation.notsupport, "error", true);
+                                    noti(trans.notsupport, "error", true);
                                     // console.log(es.message);
                                 }
                             }
