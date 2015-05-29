@@ -872,9 +872,10 @@ fmbackup = function () {
                     $("#exportAll, #exportWait, .catTemp").prop("checked", true);
                     $("#testTemp").click();
                 });
-            } else {
-                location.replace("/login?redirect=/h" + page_id + "-fmbackup");
             }
+//            else {
+//                location.replace("/login?redirect=/h" + page_id + "-fmbackup");
+//            }
         });
     };
 
