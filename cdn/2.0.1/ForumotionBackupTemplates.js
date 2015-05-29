@@ -882,7 +882,7 @@ fmbackup = function () {
         translation: translation,
         icons: icons,
         version: version,
-        page_id: page_id
+        page_id: page_id,
         init: init
     };
 
