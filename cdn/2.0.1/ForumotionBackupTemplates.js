@@ -14,7 +14,9 @@ fmbackup = function () {
         setIcons = {};
 
     var version,
-        page_id;
+        ver;
+
+    var page_id;
 
     // ------------------------------------ //
 
@@ -124,7 +126,7 @@ fmbackup = function () {
      * @param  {Selector} imp  Vị trí hiển thị ghi chú
      */
     function noti(mess, icon, imp) {
-        var showIcon = "<img src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;\" > ";
+        var showIcon = "<img src=\"" + setIcons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;\" > ";
         if (!icon) {
             showIcon = "";
         }
@@ -163,10 +165,10 @@ fmbackup = function () {
         if (img.length) {
             img.attr({
                 "class": "icon_" + icon,
-                src: icons[icon]
+                src: setIcons[icon]
             });
         } else {
-            $(se).hide().after("<img class=\"icon_" + icon + "\" src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" />");
+            $(se).hide().after("<img class=\"icon_" + icon + "\" src=\"" + setIcons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" />");
         }
     }
 
@@ -523,8 +525,7 @@ fmbackup = function () {
         });
     }
 
-    var $result = $("#readerTemp"),
-        vaild = true;
+    var vaild = true;
 
     /**
      * Thực hiện khi phát hiện tên tập tin không hợp lệ
@@ -596,7 +597,7 @@ fmbackup = function () {
                 submit: "Xác nhận",
                 start: "BẮT ĐẦU"
             }
-        }, translation);
+        }, fmbackup.translation);
 
         setIcons = $.extend({}, {
             good: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/good.png",
@@ -606,11 +607,9 @@ fmbackup = function () {
             error: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/error.gif",
             success: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/success.gif",
             disable: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
-        }, icons);
+        }, fmbackup.icons);
 
-        if (!version) {
-            version = "latest";
-        }
+        ver = fmbackup.version || "latest";
 
         // Cập nhật thông tin phiên bản Forumotion
         $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", function (data) {
@@ -619,7 +618,7 @@ fmbackup = function () {
             var $activetab = $(data).find("#activetab"),
                 $user_connected = $(data).find("#user_connected");
 
-            if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(page_id)) {
+            if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(fmbackup.page_id)) {
 
                 forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
@@ -738,6 +737,8 @@ fmbackup = function () {
                     }
                 });
 
+                var $result = $("#readerTemp");
+
                 // Tải lên tệp zip từ máy tính
                 $("#zzImport").on("change", "#importZip", function (evt) {
                     alertUnload();
@@ -787,7 +788,7 @@ fmbackup = function () {
                                             // main/110.index_body.txt
                                             var nameFile = zipEntry.name;
                                             if (!/^(main|portal|gallery|calendar|group|post|moderation|profil|mobile)\/\d{3,4}x?\.\w+\.txt$/.test(nameFile)) { // Nếu tệp không hợp lệ
-                                                $("#readerTemp").empty();
+                                                $result.empty();
                                                 notVaildName();
 
                                                 return false;
@@ -872,10 +873,9 @@ fmbackup = function () {
                     $("#exportAll, #exportWait, .catTemp").prop("checked", true);
                     $("#testTemp").click();
                 });
+            } else {
+                location.replace("/login?redirect=/h" + fmbackup.page_id + "-forumotion-backup-templates");
             }
-//            else {
-//                location.replace("/login?redirect=/h" + page_id + "-fmbackup");
-//            }
         });
     };
 
