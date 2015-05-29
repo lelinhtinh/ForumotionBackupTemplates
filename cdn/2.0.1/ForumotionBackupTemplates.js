@@ -618,10 +618,12 @@ fmbackup = function () {
 
             var $activetab = $(data).find("#activetab"),
                 $user_connected = $(data).find("#user_connected");
+
+            alert($activetab.length !== 0);
+            alert($user_connected.length !== 0);
+            alert(!isNaN(htmlPage));
+
             if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(htmlPage)) {
-                alert($activetab.length !== 0);
-                alert($user_connected.length !== 0);
-                alert(!isNaN(htmlPage));
 
                 forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
