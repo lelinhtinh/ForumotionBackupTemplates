@@ -68,3 +68,7 @@
     color: #999;
     cursor: not-allowed;
 }
+
+#skin {
+    display: none;
+}

@@ -13,9 +13,6 @@ fmbackup = function () {
     var icons = {},
         setIcons = {};
 
-    var version,
-        ver;
-
     var page_id;
 
     // ------------------------------------ //
@@ -550,52 +547,53 @@ fmbackup = function () {
     var init = function () {
 
         trans = $.extend({}, {
-            langcode: "vi",
+            langcode: "en",
             ex: {
-                title: "Xuất Template",
-                tooltip: "Trong bảng này, bạn có thể xuất tất cả [[template đã được thay đổi]] của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút {{Kiểm tra}} để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
-                checkall: "Chọn tất cả",
-                unpublish: "Template chưa công khai",
-                firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn {{Kiểm tra}}.",
-                download: "Tập tin đang được tải xuống. Nhấn vào đây nếu bạn đợi quá lâu.",
-                download2: "Template của bạn đã được tải xong.",
-                notemplate: "Không có template cần lưu trữ.",
-                sumtemplate: "Tổng số template cần lưu trữ là",
-                presssubmit: "Nhấn {{Xác nhận}} để bắt đầu!",
-                pressrefresh: "Nhấn {{Làm lại}} để chọn mục khác!",
-                loading: "Đang tạo tập tin lưu trữ..."
+                title: "Export Template",
+                tooltip: "In this space, you can also export [[changed template]] to a *.zip file and save it to your computer.\nTo start, click {{Check}} button to get version information and the list of templates that you want to export. Then click {{Ok}}, wait for few seconds and you are good to go.",
+                checkall: "Pick all",
+                unpublish: "Waiting Templates",
+                firsttip: "Pick categories you need then click {{Check}}.",
+                download: "Downloading your templates. Click here if its take too long!",
+                download2: "Your templates have been downloaded.",
+                notemplate: "There's no template archive needed",
+                sumtemplate: "The number of template archive needed it's",
+                presssubmit: "Click {{Ok}} to start!",
+                pressrefresh: "Click {{Start over}} to change your options!",
+                loading: "Creating Zip file..."
             },
             im: {
-                title: "Nhập Template",
-                tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
-                choose: "Chọn tập tin lưu trữ",
-                notpublish: "Không công khai template",
-                firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
-                notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
-                notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
-                source: "Nguồn",
-                version: "Phiên bản",
-                time: "Lưu lúc",
-                count: "Số template",
-                updateAll: "Tất cả template đã được cập nhật.",
-                loading: "Đang cập nhật template..."
+                title: "Import Template",
+                tooltip: "In this space, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Browse...) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go.",
+                choose: "Open zipped file",
+                notpublish: "Not publish Template",
+                firsttip: "Pick your zipped file then click {{Ok}}.",
+                notname: "Opps! File name is <<not valid>>.",
+                notversion: "Opps! This template require ",
+                source: "Source",
+                version: "Version",
+                time: "Last update",
+                count: "Template(s)",
+                updateAll: "All done!",
+                loading: "Updating template..."
             },
-            option: "Tùy chọn",
-            simpleclick: "Chế độ 1-Click",
-            wail: "Vui lòng chờ trong giây lát...",
-            notsupport: "Trình duyệt của bạn không hỗ trợ ứng dụng này!",
-            requestlimit: "Lỗi máy chủ từ chối truy cập! Tiến trình sẽ bắt đầu lại sau",
-            reloadtemplate: "Tải lại template ",
-            errortemplate: "Lỗi template ",
-            second: "giây.",
-            filtering: "Đang kiểm tra...",
-            checkone: "Bạn phải chọn ít nhất 1 mục!",
-            progressrun: "Tiến trình đang xử lý.",
+            decs: "Export/import all of templates in forumotion <<quickly>> and <<accurately>>.",
+            option: "Options",
+            simpleclick: "One-Click mode",
+            wail: "Please hold on a second...",
+            notsupport: "Your browser does not support this application!",
+            requestlimit: "Access denied! Progress will start over in a while",
+            reloadtemplate: "Reload template ",
+            errortemplate: "Bad template ",
+            second: "s.",
+            filtering: "Template filtering...",
+            checkone: "Pick at least 1 item",
+            progressrun: "Progress is running.",
             bt: {
-                filter: "Kiểm tra",
-                refresh: "Làm lại",
-                submit: "Xác nhận",
-                start: "BẮT ĐẦU"
+                filter: "Check",
+                refresh: "Start over",
+                submit: "Ok",
+                start: "START",
             }
         }, fmbackup.translation);
 
@@ -609,8 +607,6 @@ fmbackup = function () {
             disable: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
         }, fmbackup.icons);
 
-        ver = fmbackup.version || "latest";
-
         // Cập nhật thông tin phiên bản Forumotion
         $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", function (data) {
 
@@ -623,10 +619,10 @@ fmbackup = function () {
                 forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
                 $("#user_connected").html($user_connected.html());
-
+                $(".url").html($(data).find(".url").html());
 
                 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
-                $("#templates").html("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
+                $("#templates").html("<blockquote class=\"block_left\"><p class=\"explain\">" + showTip(trans.decs).html + "</p></blockquote><div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
 
                 // Tạo danh sách các nhóm Temp trong khu vực Tải xuống
                 menuTemp();
@@ -882,9 +878,18 @@ fmbackup = function () {
     return {
         translation: translation,
         icons: icons,
-        version: version,
         page_id: page_id,
         init: init
     };
 
 }();
+
+$(".tabA").click(function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    $(".tabDiv").hide();
+    $($this.attr("href")).show();
+    $(".tabLi").removeAttr("id");
+    $this.parent().attr("id", "activetab");
+    $("#backupMode").text($this.text());
+});
