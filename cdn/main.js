@@ -49,8 +49,6 @@ fmbackup.translation = {
     }
 };
 
-fmbackup.version = "2.0.1";
-
 fmbackup.page_id = 28;
 
 fmbackup.init();
