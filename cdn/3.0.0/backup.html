@@ -13,16 +13,16 @@
             counter-reset: section;
             border: 1px solid #07f
         }
-        
+
         #zzBackup legend {
             color: #e000a2
         }
-        
+
         #zzBackup ol {
             margin: 5px 0 15px;
             list-style: none outside none
         }
-        
+
         #zzBackup li:before {
             counter-increment: section;
             content: counter(section) '.';
@@ -31,30 +31,30 @@
             text-align: right;
             margin-right: 5px
         }
-        
+
         .backupOption {
             font-size: 18px;
             color: #00a8a1
         }
-        
+
         #importNoti strong {
             color: #DA4FB8
         }
-        
+
         #zzBackup dt label {
             display: block;
             margin-top: 10px;
             color: #777
         }
-        
+
         #zzBackup dt label:hover {
             color: #111
         }
-        
+
         #zzBackup label input:checked ~ span {
             color: #0094CA
         }
-        
+
         .buttonOne {
             display: none;
             margin-top: 10px;
@@ -64,28 +64,28 @@
             font-weight: 700;
             border: 3px solid #DDD
         }
-        
+
         .buttonOne:hover {
             border-color: #444;
             cursor: pointer
         }
-        
+
         .buttonOne:active {
             background: #444
         }
-        
+
         #zzBackup:disabled,
         #zzBackup:disabled ~ span {
             color: #999;
             cursor: not-allowed
         }
-        
+
         #skin,
         #version,
         #importSkinStatus {
             display: none
         }
-        
+
         .icon_loading {
             background: url(http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif) 2px 2px/14px 14px no-repeat transparent;
             border-color: #FFAE00;
@@ -108,7 +108,7 @@
                     <ul class="preview_forum clearfix">
                         <li class="header_admin_left"><img src="http://illiweb.com/fa/admin/icones/loupe.png" alt="" /><a href="/" target="_blank">PREVIEW FORUM</a>
                         </li>
-                        <li class="header_admin_right"><img src="http://i19.servimg.com/u/f19/18/83/32/63/video_11.png" alt="Toggle" /><a href="#" target="_blank">VIDEO TUTORIAL</a>
+                        <li class="header_admin_right"><img src="http://i19.servimg.com/u/f19/18/83/32/63/video_11.png" alt="Toggle" /><a href="https://youtu.be/J6oeQ_f8nQw" target="_blank">VIDEO TUTORIAL</a>
                         </li>
                     </ul>
                 </div>
@@ -246,7 +246,59 @@
     <script src="http://baivong.github.io/ForumotionBackupTemplates/cdn/3.0.0/FileSaver.min.js" type="text/javascript"></script>
     <script src="http://baivong.github.io/ForumotionBackupTemplates/cdn/3.0.0/fmbackup.js" type="text/javascript"></script>
     <script type="text/javascript">
-        fmbackup.page_id = "PAGE_ID";
+        fmbackup.translation = {
+            langcode: "vi",
+            ex: {
+                title: "Xuất Template",
+                tooltip: "Trong bảng này, bạn có thể xuất tất cả [[template đã được thay đổi]] của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút {{Kiểm tra}} để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+                checkall: "Chọn tất cả",
+                unpublish: "Template chưa công khai",
+                firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn {{Kiểm tra}}.",
+                download: "Tập tin đang được tải xuống. Nhấn vào đây nếu bạn đợi quá lâu.",
+                download2: "Template của bạn đã được tải xong.",
+                notemplate: "Không có template cần lưu trữ.",
+                sumtemplate: "Tổng số template cần lưu trữ là",
+                presssubmit: "Nhấn {{Xác nhận}} để bắt đầu!",
+                pressrefresh: "Nhấn {{Làm lại}} để chọn mục khác!",
+                loading: "Đang tạo tập tin lưu trữ..."
+            },
+            im: {
+                title: "Nhập Template",
+                tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+                choose: "Chọn tập tin lưu trữ",
+                notpublish: "Không công khai template",
+                firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
+                notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
+                notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
+                source: "Nguồn",
+                version: "Phiên bản",
+                time: "Lưu lúc",
+                count: "Số template",
+                updateAll: "Tất cả template đã được cập nhật.",
+                loading: "Đang cập nhật template..."
+            },
+            decs: "Nhập/Xuất tất cả templates trong Forumotion một cách <<nhanh chóng>> và <<chính xác>>.",
+            option: "Tùy chọn",
+            simpleclick: "Chế độ 1-Click",
+            wail: "Vui lòng chờ trong giây lát...",
+            notsupport: "Trình duyệt của bạn không hỗ trợ ứng dụng này!",
+            requestlimit: "Lỗi máy chủ từ chối truy cập! Tiến trình sẽ bắt đầu lại sau",
+            reloadtemplate: "Tải lại template ",
+            errortemplate: "Lỗi template ",
+            second: "giây.",
+            filtering: "Đang kiểm tra...",
+            checkone: "Bạn phải chọn ít nhất 1 mục!",
+            progressrun: "Tiến trình đang xử lý.",
+            bt: {
+                filter: "Kiểm tra",
+                refresh: "Làm lại",
+                submit: "Xác nhận",
+                start: "BẮT ĐẦU"
+            }
+        };
+
+        fmbackup.page_id = 28;
+
         fmbackup.init();
     </script>
 </body>

@@ -893,7 +893,7 @@ fmbackup = function () {
                     $("#testTemp").click();
                 });
             } else {
-                location.replace("/login?redirect=/h" + fmbackup.page_id + "-forumotion-backup-templates");
+                location.replace("/login?redirect=/h" + fmbackup.page_id + "-backup-and-recovery-templates");
             }
         });
     };
