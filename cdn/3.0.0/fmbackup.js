@@ -478,6 +478,7 @@ fmbackup = function () {
                     mess = trans.ex.pressrefresh;
                     $("#exportTemp").hide();
                 }
+                $("#refreshTemp, #exportTemp")
                 noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
 
                 if ($("#exportOne").prop("checked")) {
@@ -612,11 +613,12 @@ fmbackup = function () {
 
 
             var $activetab = $(data).find("#activetab"),
-                $user_connected = $(data).find("#user_connected");
+                $user_connected = $(data).find("#user_connected"),
+                $form_version = $(data).find("[name=\"form_version\"]");
 
-            if ($activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(fmbackup.page_id)) {
+            if ($form_version.length !== 0 && $activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(fmbackup.page_id)) {
 
-                forumVersion = $(data).find("[name=\"form_version\"]").find("dd:first > input:checked").val();
+                forumVersion = $form_version.find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
                 $("#user_connected").html($user_connected.html());
                 $(".url").html($(data).find(".url").html());
@@ -671,7 +673,7 @@ fmbackup = function () {
                         alertUnload();
 
                         $(this).hide();
-                        $("#refreshTemp, #exportTemp").show();
+                        $("#refreshTemp, #exportTemp").hide();
 
                         replaceIcon(".catTemp:not(:checked)", "disable");
                         noti(trans.wail, "load");
