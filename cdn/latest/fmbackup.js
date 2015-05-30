@@ -478,7 +478,7 @@ fmbackup = function () {
                     mess = trans.ex.pressrefresh;
                     $("#exportTemp").hide();
                 }
-                $("#refreshTemp, #exportTemp")
+                $("#refreshTemp, #exportTemp").show();
                 noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
 
                 if ($("#exportOne").prop("checked")) {
