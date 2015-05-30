@@ -2,7 +2,7 @@
  * jsZip (v2.5.0) By StuartKnightley <http://stuartk.com/jszip>
  * jszip-utils (v0.0.2) By Stuart Knightley, David Duponchel <http://stuk.github.io/jszip-utils>
  * FileSaver (2015-05-07.2) By Eli Grey <http://eligrey.com>
- * ForumotionBackupTemplates (v2.0.1) By Zzbaivong <http://devs.forumvi.com>
+ * ForumotionBackupTemplates (v3.0.0) By Zzbaivong <http://devs.forumvi.com>
  */
 
 fmbackup = function () {
