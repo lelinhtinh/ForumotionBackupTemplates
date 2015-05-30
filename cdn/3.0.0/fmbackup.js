@@ -629,7 +629,7 @@ fmbackup = function () {
                         versionChecked = $("[name=\"tpl\"]:checked").val();
                     $versionInput.prop("disabled", true);
 
-                    $("[name=\"change_version\"]").val("Wail...").addClass("icon_load");
+                    $("[name=\"change_version\"]").val("Wail...").addClass("icon_loading");
 
                     $.post("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", {
                         tpl: versionChecked,
@@ -638,7 +638,7 @@ fmbackup = function () {
                     }, function () {
                         forumVersion = versionChecked;
                         $versionInput.prop("disabled", false);
-                        $("[name=\"change_version\"]").val("Save").removeClass("icon_load");
+                        $("[name=\"change_version\"]").val("Save").removeClass("icon_loading");
                     });
                 });
 
