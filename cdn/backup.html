@@ -13,16 +13,16 @@
             counter-reset: section;
             border: 1px solid #07f
         }
-        
+
         #zzBackup legend {
             color: #e000a2
         }
-        
+
         #zzBackup ol {
             margin: 5px 0 15px;
             list-style: none outside none
         }
-        
+
         #zzBackup li:before {
             counter-increment: section;
             content: counter(section) '.';
@@ -31,30 +31,30 @@
             text-align: right;
             margin-right: 5px
         }
-        
+
         .backupOption {
             font-size: 18px;
             color: #00a8a1
         }
-        
+
         #importNoti strong {
             color: #DA4FB8
         }
-        
+
         #zzBackup dt label {
             display: block;
             margin-top: 10px;
             color: #777
         }
-        
+
         #zzBackup dt label:hover {
             color: #111
         }
-        
+
         #zzBackup label input:checked ~ span {
             color: #0094CA
         }
-        
+
         .buttonOne {
             display: none;
             margin-top: 10px;
@@ -64,27 +64,28 @@
             font-weight: 700;
             border: 3px solid #DDD
         }
-        
+
         .buttonOne:hover {
             border-color: #444;
             cursor: pointer
         }
-        
+
         .buttonOne:active {
             background: #444
         }
-        
+
         #zzBackup:disabled,
         #zzBackup:disabled ~ span {
             color: #999;
             cursor: not-allowed
         }
-        
+
         #skin,
-        #version {
+        #version,
+        #importSkinStatus {
             display: none
         }
-        
+
         .icon_load {
             background: url(http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif) 2px 2px/14px 14px no-repeat transparent;
             border-color: #FFAE00;
@@ -167,10 +168,11 @@
                                                 </dl>
                                             </fieldset>
                                         </form>
-                                        <form method="post" name="" action="/admin/index.forum?part=themes&sub=styles&mode=export&extended_admin=1" enctype="multipart/form-data">
+                                        <form target="noreload" method="post" name="" action="/admin/index.forum?part=themes&sub=styles&mode=export&extended_admin=1" enctype="multipart/form-data">
                                             <input type="hidden" name="mode" value="import" />
                                             <fieldset class="style-theme-export">
                                                 <legend>Import the skin</legend>
+                                                <p id="importSkinStatus" class="messagebox"><img src="http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/success.gif" alt="icon" style="height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;" /> Skin import is <span style="color:green">complete</span>.</p>
                                                 <dl class="clearfix">
                                                     <dt>
                                                         <label for="importfile"><img src="http://illiweb.com/fa/admin/icones/question2.png" title="Here you can import a skin you received from another forum. Your current skin will be replaced. Export it completely at least once before importing a new one!" />&nbsp;Import the skin</label>
@@ -184,6 +186,7 @@
                                                 </dl>
                                             </fieldset>
                                         </form>
+                                        <iframe width="0" height="0" frameborder="0" name="noreload" onload="reloadSkin();"></iframe>
                                     </div>
                                     <div id="version" class="tabDiv">
                                         <blockquote class="block_left">
@@ -197,19 +200,19 @@
                                                         <label>Change version&nbsp;:</label>
                                                     </dt>
                                                     <dd>
-                                                        <input type="radio" name="tpl" id="subsilver" value="subsilver" class="radio">
+                                                        <input type="radio" name="tpl" id="subsilver" value="subsilver" class="radio" />
                                                         <label for="subsilver" dir=""> phpBB2</label>
-                                                        <input type="radio" name="tpl" id="prosilver" value="prosilver" class="radio">
+                                                        <input type="radio" name="tpl" id="prosilver" value="prosilver" class="radio" />
                                                         <label for="prosilver" dir=""> phpBB3</label>
-                                                        <input type="radio" name="tpl" id="punbb" value="punbb" class="radio">
+                                                        <input type="radio" name="tpl" id="punbb" value="punbb" class="radio" />
                                                         <label for="punbb" dir=""> PunBB</label>
-                                                        <input type="radio" name="tpl" id="invision" value="invision" class="radio">
+                                                        <input type="radio" name="tpl" id="invision" value="invision" class="radio" />
                                                         <label for="invision" dir=""> Invision</label>
                                                     </dd>
                                                 </dl>
                                                 <div class="div_btns">
-                                                    <input type="hidden" name="keep_theme" id="keep_theme_defaut" value="2" checked="checked" class="radio">
-                                                    <input type="submit" class="icon_ok" value="Save" name="change_version">
+                                                    <input type="hidden" name="keep_theme" id="keep_theme_defaut" value="2" checked="checked" class="radio" />
+                                                    <input type="submit" class="icon_ok" value="Save" name="change_version" />
                                                 </div>
                                             </fieldset>
                                         </form>

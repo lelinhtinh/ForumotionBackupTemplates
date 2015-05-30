@@ -914,3 +914,11 @@ $(".tabA").click(function (e) {
     $this.parent().attr("id", "activetab");
     $("#backupMode").text($this.text());
 });
+
+function reloadSkin() {
+    var $skinStatus = $("#importSkinStatus");
+    $skinStatus.show();
+    setTimeout(function(){
+        $skinStatus.slideUp();
+    }, 3000);
+}
