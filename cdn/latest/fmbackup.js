@@ -5,7 +5,7 @@
  * ForumotionBackupTemplates (v2.0.1) By Zzbaivong <http://devs.forumvi.com>
  */
 
-fmbackup = function () {
+fmbackup = function() {
 
     var translation = {},
         trans = {};
@@ -18,7 +18,7 @@ fmbackup = function () {
     // ------------------------------------ //
 
     var allowNotification = true;
-    Notification.requestPermission(function (result) {
+    Notification.requestPermission(function(result) {
         if (result === "denied") {
             allowNotification = false;
             // console.log("Permission wasn't granted. Allow a retry.");
@@ -198,7 +198,7 @@ fmbackup = function () {
         }
         // Bắt đầu đếm ngược
         var count = time - 1,
-            resum = setInterval(function () {
+            resum = setInterval(function() {
                 var result = count--;
                 $("#" + Id).html(result);
 
@@ -230,7 +230,7 @@ fmbackup = function () {
         replaceIcon(".cusTemp[value='" + item[1] + "']", "load");
 
         // Tải Temp đang xét
-        $.get("/admin/index.forum?part=themes&sub=templates&mode=edit_" + item[0] + "&t=" + item[1] + "&l=" + item[0] + "&extended_admin=1&tid=" + tId).done(function (data) { // Xử lý khi tải thành công
+        $.get("/admin/index.forum?part=themes&sub=templates&mode=edit_" + item[0] + "&t=" + item[1] + "&l=" + item[0] + "&extended_admin=1&tid=" + tId).done(function(data) { // Xử lý khi tải thành công
 
             zip.file(item[0] + "/" + item[1] + "." + item[2] + ".txt", $(data).find("#template").val()); // Lưu thông tin Temp đã tải vào tệp zip
 
@@ -240,7 +240,7 @@ fmbackup = function () {
             if (m < bkLeg) { // Nếu vẫn còn Temp trong danh sách
 
                 // Tải Temp tiếp theo sau 1 giây (thời gian chờ này là để tránh lỗi từ chối truy cập)
-                setTimeout(function () {
+                setTimeout(function() {
                     exportTemp(m);
                 }, 1000);
             } else { // Khi tất cả Temp đã tải xong
@@ -272,10 +272,10 @@ fmbackup = function () {
 
                 alertUnloadOff();
             }
-        }).fail(function () { // Xử lý khi tải bị lỗi
+        }).fail(function() { // Xử lý khi tải bị lỗi
 
             // Gọi phương thức xử lý khi bị từ chối truy cập, chờ 60 giây trước khi tiếp tụi
-            requestLimit(false, 60, ".cusTemp[value='" + item[1] + "']", item[2], "exportResume", function () {
+            requestLimit(false, 60, ".cusTemp[value='" + item[1] + "']", item[2], "exportResume", function() {
                 exportTemp(n);
             });
         });
@@ -307,7 +307,7 @@ fmbackup = function () {
             } else {
 
                 // Chờ 2 giây mới tiếp tục để tránh lỗi từ chối truy cập
-                setTimeout(function () {
+                setTimeout(function() {
                     importTemp(m);
                 }, 2000);
             }
@@ -338,11 +338,11 @@ fmbackup = function () {
      */
     function importPublish(se, m, bkLeg, tempId, tempName, link) {
         replaceIcon(se, "load");
-        $.post(link).done(function () {
+        $.post(link).done(function() {
             importSuccess(m, bkLeg, tempId);
             importEnd(m, bkLeg);
-        }).fail(function () {
-            requestLimit(true, 120, se, tempName, "importResume", function () {
+        }).fail(function() {
+            requestLimit(true, 120, se, tempName, "importResume", function() {
                 importPublish(se, m, bkLeg, tempId, tempName, link);
             });
         });
@@ -384,21 +384,21 @@ fmbackup = function () {
                 tpl_name: tempName,
                 template: temp.template,
                 submit: "Save"
-            }).done(function () {
+            }).done(function() {
                 if (temp.wail && !$("#importPublish").is(":checked")) { // Xuất bản Temp
 
                     // Chờ 2 giây để tránh lỗi từ chối truy cập
-                    setTimeout(function () {
+                    setTimeout(function() {
                         importPublish(se, m, bkLeg, tempId, tempName, "/admin/index.forum?part=themes&sub=templates&mode=edit_" + tempMode + "&t=" + tempId + "&l=" + tempMode + "&main_mode=edit&extended_admin=1&pub=1&tid=" + tId);
                     }, 2000);
                 } else { // Nếu Temp không cho phép xuất bản thì tiếp tục với Temp kế tiếp
                     importSuccess(m, bkLeg, tempId);
                     importEnd(m, bkLeg);
                 }
-            }).fail(function () {
+            }).fail(function() {
 
                 // Xử lý lỗi từ chối truy cập, chờ 120 giây trước khi bắt đầu lại
-                requestLimit(true, 120, se, tempName, "importResume", function () {
+                requestLimit(true, 120, se, tempName, "importResume", function() {
                     importTemp(n);
                 });
             });
@@ -424,7 +424,7 @@ fmbackup = function () {
 
         replaceIcon(se, "load");
 
-        $.get("/admin/index.forum?mode=" + cat + "&part=themes&sub=templates&tid=" + tId).done(function (data) {
+        $.get("/admin/index.forum?mode=" + cat + "&part=themes&sub=templates&tid=" + tId).done(function(data) {
 
             // Kiểm tra Temp đã chỉnh sửa mà chưa lưu
             var tempWait = "";
@@ -439,7 +439,7 @@ fmbackup = function () {
             var status = "noTemp";
 
             if ($customTemp.length) { // Có Temp đã chỉnh sửa
-                $customTemp.each(function () {
+                $customTemp.each(function() {
 
                     // Đánh dấu x vào tên của Temp chưa lưu
                     var markWail = "";
@@ -465,7 +465,7 @@ fmbackup = function () {
 
             if (m < bkLeg) { // Nếu còn nhóm Temp trong danh sách
 
-                setTimeout(function () {
+                setTimeout(function() {
                     testTemp(m);
                 }, 500); // Chờ 0.5 giây và kiểm tra nhóm kế tiếp
 
@@ -484,8 +484,8 @@ fmbackup = function () {
                     $("#exportTemp").click();
                 }
             }
-        }).fail(function () {
-            requestLimit(false, 60, se, cat, "testResume", function () {
+        }).fail(function() {
+            requestLimit(false, 60, se, cat, "testResume", function() {
                 testTemp(n);
             });
         });
@@ -517,7 +517,7 @@ fmbackup = function () {
     function menuTemp() {
         var listTemp = $("#listTemp");
         listTemp.empty();
-        $.each(listTempGroup, function (key, val) {
+        $.each(listTempGroup, function(key, val) {
             listTemp.append("<div><label><input class=\"catTemp\" type=\"checkbox\" value=\"" + key + "\" />&nbsp;<strong style=\"color: #0014FF\">" + val + "</strong></label><ol class=\"" + key + "\"></ol></div>");
         });
     }
@@ -544,7 +544,7 @@ fmbackup = function () {
     }
 
 
-    var init = function () {
+    var init = function() {
 
         trans = $.extend({}, {
             langcode: "en",
@@ -608,7 +608,7 @@ fmbackup = function () {
         }, fmbackup.icons);
 
         // Cập nhật thông tin phiên bản Forumotion
-        $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", function (data) {
+        $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", function(data) {
 
 
             var $activetab = $(data).find("#activetab"),
@@ -620,6 +620,23 @@ fmbackup = function () {
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
                 $("#user_connected").html($user_connected.html());
                 $(".url").html($(data).find(".url").html());
+
+                $('[name="tpl"][value="' + forumVersion + '"]').prop("checked", true);
+
+                $("#version").find("form").submit(function(e) {
+                    e.preventDefault();
+                    var $versionInput = $('[name="tpl"], [name="change_version"]'),
+                        versionChecked = $('[name="tpl"]:checked').val();
+                    $versionInput.prop("disabled", true);
+                    $.post("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1", {
+                        tpl: versionChecked,
+                        keep_theme: 2,
+                        change_version: "Save"
+                    }, function() {
+                        forumVersion = versionChecked;
+                        $versionInput.prop("disabled", false);
+                    });
+                });
 
                 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
                 $("#templates").html("<blockquote class=\"block_left\"><p class=\"explain\">" + showTip(trans.decs).html + "</p></blockquote><div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
@@ -633,17 +650,17 @@ fmbackup = function () {
                 // EXPORT TEMPLATE
 
                 // Chọn/bỏ chọn Toàn bộ Temp sẽ Tải xuống
-                $("#exportAll").change(function () {
+                $("#exportAll").change(function() {
                     $(".catTemp").prop("checked", $(this).prop("checked"));
                 });
 
                 // Cuộn đến khu vực đang thao tác (Để xem ghi chú tiến trình)
-                $(":button", "#zzBackup").click(function () {
+                $(":button", "#zzBackup").click(function() {
                     scrollGoto($(this).closest("fieldset").attr("id"));
                 });
 
                 // Lấy danh sách các Temp đã chỉnh sửa
-                $("#testTemp").click(function () {
+                $("#testTemp").click(function() {
                     $("#exportWait, #exportOne, #exportStart").prop("disabled", true);
                     arrTest = [];
                     if ($(".catTemp:checked").length) { // Nếu đã chọn nhóm Temp cần kiểm tra
@@ -655,7 +672,7 @@ fmbackup = function () {
                         replaceIcon(".catTemp:not(:checked)", "disable");
                         noti(trans.wail, "load");
 
-                        $(".catTemp:checked").each(function () {
+                        $(".catTemp:checked").each(function() {
                             arrTest.push($(this).val());
                         });
 
@@ -669,7 +686,7 @@ fmbackup = function () {
                 });
 
                 // Làm mới các thông số
-                $("#refreshTemp").click(function () {
+                $("#refreshTemp").click(function() {
                     arrTempExport = [];
                     zip = new JSZip();
                     $(this).add("#exportTemp").hide();
@@ -683,7 +700,7 @@ fmbackup = function () {
                 });
 
                 // Bắt đầu tải xuống
-                $("#exportTemp").click(function () {
+                $("#exportTemp").click(function() {
                     if (!$(".cusTemp:checked").length) { // Nếu không có Temp chọn tải xuống
 
                         $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
@@ -693,7 +710,7 @@ fmbackup = function () {
                     } else {
                         alertUnload();
 
-                        $(".cusTemp:checked").each(function () {
+                        $(".cusTemp:checked").each(function() {
                             var cus = [];
                             var $this = $(this);
                             cus[0] = $this.closest("ol").attr("class"); // Folder
@@ -716,7 +733,7 @@ fmbackup = function () {
                 noti(trans.im.firsttip, "info", true);
 
                 // Bắt đầu Tải lên
-                $("#importTemp").click(function () {
+                $("#importTemp").click(function() {
                     if (!$(".cusTemp2:checked").length) {
                         noti(trans.checkone, "error", true);
 
@@ -736,7 +753,7 @@ fmbackup = function () {
                 var $result = $("#readerTemp");
 
                 // Tải lên tệp zip từ máy tính
-                $("#zzImport").on("change", "#importZip", function (evt) {
+                $("#zzImport").on("change", "#importZip", function(evt) {
                     alertUnload();
 
                     $("#importTemp").show();
@@ -745,9 +762,9 @@ fmbackup = function () {
                     var files = evt.target.files[0];
                     var reader = new FileReader();
 
-                    reader.onload = (function (theFile) {
+                    reader.onload = (function(theFile) {
 
-                        return function (e) {
+                        return function(e) {
 
                             // Phân tích tên file để lấy ra thông số cần thiết
                             // invision.1432416686.devs.forumvi.com.zip
@@ -778,7 +795,7 @@ fmbackup = function () {
                                         noti("<<" + trans.im.source + ">>: <a href=\"http://" + backup[3] + "\" target=\"_blank\">" + backup[3] + "</a>\n<<" + trans.im.version + ">>: " + verName[backup[1]] + "\n<<" + trans.im.time + ">>: " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n<<" + trans.im.count + ">>: " + Object.keys(zipImport.files).length, false, true);
 
                                         zipTemp = [];
-                                        $.each(zipImport.files, function (index, zipEntry) { // Lấy dữ liệu các tệp bên trong
+                                        $.each(zipImport.files, function(index, zipEntry) { // Lấy dữ liệu các tệp bên trong
 
                                             // Phân tích tên file để lấy ra thông số cần thiết
                                             // main/110.index_body.txt
@@ -835,14 +852,14 @@ fmbackup = function () {
                 });
 
                 // Chọn/Bỏ chọn tất cả Temp trong nhóm
-                $("#zzBackup").on("change", ".catTemp, .catTemp2", function () {
+                $("#zzBackup").on("change", ".catTemp, .catTemp2", function() {
                     var $this = $(this);
                     $(":checkbox", "." + $this.val()).prop("checked", $this.prop("checked"));
                 });
 
                 // ONE-CLICK MODE
 
-                $(".oneMode").on("change", function () {
+                $(".oneMode").on("change", function() {
                     var $parent = $(this).closest("dl"),
                         $start = $parent.find(".buttonOne"),
                         $groupBtn = $parent.find(".div_btns");
@@ -855,14 +872,14 @@ fmbackup = function () {
                     }
                 });
 
-                $("#importStart").click(function () {
+                $("#importStart").click(function() {
                     alertUnload();
 
                     $("#importZip").click();
                 });
 
 
-                $("#exportStart").click(function () {
+                $("#exportStart").click(function() {
                     alertUnload();
 
                     $("#refreshTemp").click();
@@ -884,7 +901,7 @@ fmbackup = function () {
 
 }();
 
-$(".tabA").click(function (e) {
+$(".tabA").click(function(e) {
     e.preventDefault();
     var $this = $(this);
     $(".tabDiv").hide();
