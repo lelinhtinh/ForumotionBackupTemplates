@@ -915,10 +915,10 @@ $(".tabA").click(function (e) {
     $("#backupMode").text($this.text());
 });
 
-function reloadSkin() {
+$("#uploadSkin").load(function () {
     var $skinStatus = $("#importSkinStatus");
     $skinStatus.show();
-    setTimeout(function(){
+    setTimeout(function () {
         $skinStatus.slideUp();
     }, 3000);
-}
+});

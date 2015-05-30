@@ -13,16 +13,16 @@
             counter-reset: section;
             border: 1px solid #07f
         }
-
+        
         #zzBackup legend {
             color: #e000a2
         }
-
+        
         #zzBackup ol {
             margin: 5px 0 15px;
             list-style: none outside none
         }
-
+        
         #zzBackup li:before {
             counter-increment: section;
             content: counter(section) '.';
@@ -31,30 +31,30 @@
             text-align: right;
             margin-right: 5px
         }
-
+        
         .backupOption {
             font-size: 18px;
             color: #00a8a1
         }
-
+        
         #importNoti strong {
             color: #DA4FB8
         }
-
+        
         #zzBackup dt label {
             display: block;
             margin-top: 10px;
             color: #777
         }
-
+        
         #zzBackup dt label:hover {
             color: #111
         }
-
+        
         #zzBackup label input:checked ~ span {
             color: #0094CA
         }
-
+        
         .buttonOne {
             display: none;
             margin-top: 10px;
@@ -64,28 +64,28 @@
             font-weight: 700;
             border: 3px solid #DDD
         }
-
+        
         .buttonOne:hover {
             border-color: #444;
             cursor: pointer
         }
-
+        
         .buttonOne:active {
             background: #444
         }
-
+        
         #zzBackup:disabled,
         #zzBackup:disabled ~ span {
             color: #999;
             cursor: not-allowed
         }
-
+        
         #skin,
         #version,
         #importSkinStatus {
             display: none
         }
-
+        
         .icon_loading {
             background: url(http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif) 2px 2px/14px 14px no-repeat transparent;
             border-color: #FFAE00;
@@ -186,7 +186,7 @@
                                                 </dl>
                                             </fieldset>
                                         </form>
-                                        <iframe width="0" height="0" frameborder="0" name="noreload" onload="reloadSkin();"></iframe>
+                                        <iframe width="0" height="0" frameborder="0" name="noreload" id="uploadSkin"></iframe>
                                     </div>
                                     <div id="version" class="tabDiv">
                                         <blockquote class="block_left">
