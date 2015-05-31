@@ -210,6 +210,7 @@ function timeFormat(time) {
 var tId = $("a", "#activetab").attr("href").match(/&tid=([^&?]+)/)[1]; // Mã truy cập ACP
 
 var progressIsRun = true;
+
 function progressIsRunning(e) {
     var message = "Progress is running.";
     e.returnValue = message;
@@ -237,15 +238,21 @@ function alertUnloadOff() {
  * @param  {Selector} imp  Vị trí hiển thị ghi chú
  */
 function noti(mess, icon, imp) {
-    var showIcon = "<img src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px; vertical-align: middle; margin-top: -3px;\" > ";
-    if (!icon) {
-        showIcon = "";
-    }
     var se = "#exportNoti";
     if (imp) {
         se = "#importNoti";
     }
-    $(se).html(showIcon + showTip(mess).html);
+    $(se).empty();
+    if (!!icon) {
+        $("<img>", {
+            src: icons[icon],
+            alt: "icon",
+            "class": "notiIcon"
+        }).appendTo(se);
+    }
+    $("<span>", {
+        html: showTip(mess).html
+    }).appendTo(se);
     // console.log(showTip(mess).text);
 }
 
@@ -275,11 +282,16 @@ function replaceIcon(se, icon) {
     var img = $(se).next("img");
     if (img.length) {
         img.attr({
-            "class": "icon_" + icon,
+            "class": "notiIcon icon_" + icon,
             src: icons[icon]
         });
     } else {
-        $(se).hide().after("<img class=\"icon_" + icon + "\" src=\"" + icons[icon] + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" />");
+        $(se).hide();
+        $("<img>", {
+            "class": "notiIcon icon_" + icon,
+            src: icons[icon],
+            alt: "icon"
+        }).insertAfter(se);
     }
 }
 
@@ -314,7 +326,7 @@ function requestLimit(exim, time, se, temp, Id, callback) {
     var count = time - 1,
         resum = setInterval(function () {
             var result = count--;
-            $("#" + Id).html(result);
+            $("#" + Id).text(result);
 
             if (result <= 0) {
                 clearInterval(resum);
@@ -549,8 +561,8 @@ function testTemp(n) {
         // Tập hợp danh sách các Temp đã sửa (bao gồm Temp chưa lưu nếu được chọn)
         var $customTemp = $(data).find("td.row1 span[style=\"color:#7CBA2C\"]" + tempWait).parent();
 
-        var showResult = "";
         var status = "noTemp";
+        var $showResult = $("#listTemp ." + cat);
 
         if ($customTemp.length) { // Có Temp đã chỉnh sửa
             $customTemp.each(function () {
@@ -562,17 +574,33 @@ function testTemp(n) {
                 }
 
                 var customTempId = this.search.match(/&t=(\d+)&/)[1];
-                showResult += "<li><label><input class=\"cusTemp\" type=\"checkbox\" value=\"" + customTempId + markWail + "\" checked />&nbsp;" + $(this).html() + "</label></li>";
+                var $tempName = $(this).html();
+
+
+                $("<li>").append($("<label>", {
+                    html: $tempName
+                }).prepend($("<input>", {
+                    "class": "cusTemp",
+                    type: "checkbox",
+                    value: customTempId + markWail,
+                    checked: "checked"
+                }))).appendTo($showResult);
             });
             status = "hasTemp";
 
         } else { // Không có tem chỉnh sửa
+
             $this.prop("checked", false);
-            showResult = "<li><img src=\"" + icons.disable + "\" alt=\"icon\" style=\"height: 13px; width: 13px;\" /> <em>" + trans.ex.notemplate + "</em></li>";
+            $("<li>").append($("<img>", {
+                src: icons.disable,
+                alt: "icon",
+                "class": "notiIcon"
+            })).append($("<em>", {
+                text: trans.ex.notemplate
+            })).appendTo($showResult);
         }
 
         catWrap.attr("class", status);
-        $("#listTemp ." + cat).html(showResult);
 
         replaceIcon(se, "success");
         noti("(" + m + "/" + bkLeg + ") " + trans.filtering, "load");
@@ -592,6 +620,8 @@ function testTemp(n) {
                 mess = trans.ex.pressrefresh;
                 $("#exportTemp").hide();
             }
+
+            $("#refreshTemp, #exportTemp").show();
             noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
 
             if ($("#exportOne").prop("checked")) {
@@ -621,10 +651,21 @@ var listTempGroup = {
  * Tạo danh sách các nhóm Templates để người dùng chọn
  */
 function menuTemp() {
-    var listTemp = $("#listTemp");
-    listTemp.empty();
+    var $listTemp = $("#listTemp");
+    $listTemp.empty();
     $.each(listTempGroup, function (key, val) {
-        listTemp.append("<div><label><input class=\"catTemp\" type=\"checkbox\" value=\"" + key + "\" />&nbsp;<strong style=\"color: #0014FF\">" + val + "</strong></label><ol class=\"" + key + "\"></ol></div>");
+        $("<div>").append($("<label>").append($("<input>", {
+            "class": "catTemp",
+            type: "checkbox",
+            value: key
+        })).append($("<strong>", {
+            css: {
+                color: "#0014FF"
+            },
+            text: val
+        }))).append($("<ol>", {
+            "class": key
+        })).appendTo($listTemp);
     });
 }
 
@@ -634,7 +675,141 @@ $.get("/admin/index.forum?part=themes&sub=styles&mode=version&extended_admin=1&t
 });
 
 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
-$("blockquote").after("<div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
+$("<div>", {
+    id: "zzBackup"
+}).append($("<fieldset>", {
+    id: "zzExport",
+    "class": "style-theme-export"
+}).append($("<legend>", {
+    text: trans.ex.title
+})).append($("<p>", {
+    id: "exportNoti",
+    "class": "messagebox"
+})).append($("<dl>", {
+    "class": "clearfix"
+}).append($("<dt>").append($("<label>", {
+    for: "exportAll"
+}).append($("<input>", {
+    id: "exportAll",
+    type: "checkbox",
+    css: {
+        display: "none"
+    }
+})).append($("<img>", {
+    src: "http://illiweb.com/fa/admin/icones/question2.png",
+    title: showTip(trans.ex.tooltip).text,
+    "class": "show_tooltips",
+    align: "absmiddle"
+})).append($("<span>", {
+    text: trans.ex.checkall
+}))).append($("<br>")).append($("<br>")).append($("<span>", {
+    "class": "backupOption",
+    text: trans.option
+})).append($("<br>")).append($("<label>", {
+    for: "exportWait"
+}).append($("<input>", {
+    id: "exportWait",
+    type: "checkbox"
+})).append($("<span>", {
+    text: trans.ex.unpublish
+}))).append($("<label>", {
+    for: "exportOne"
+}).append($("<input>", {
+    id: "exportOne",
+    "class": "oneMode",
+    type: "checkbox"
+})).append($("<span>", {
+    text: trans.simpleclick
+}))).append($("<button>", {
+    id: "exportStart",
+    "class": "buttonOne",
+    text: trans.bt.start
+}))).append($("<dd>").append($("<div>", {
+    id: "listTemp"
+})).append($("<div>", {
+    "class": "div_btns"
+}).append($("<input>", {
+    type: "button",
+    id: "testTemp",
+    "class": "icon_search",
+    name: "testTemp",
+    value: trans.bt.filter
+})).append($("<input>", {
+    type: "button",
+    id: "refreshTemp",
+    "class": "icon_refresh",
+    name: "refreshTemp",
+    value: trans.bt.refresh,
+    css: {
+        display: "none"
+    }
+})).append($("<input>", {
+    type: "button",
+    id: "exportTemp",
+    "class": "icon_ok",
+    name: "exportTemp",
+    value: trans.bt.submit,
+    css: {
+        display: "none"
+    }
+})))))).append($("<fieldset>", {
+    id: "zzImport",
+    "class": "style-theme-export"
+}).append($("<legend>", {
+    text: trans.im.title
+})).append($("<p>", {
+    id: "importNoti",
+    "class": "messagebox"
+})).append($("<dl>").append($("<dt>").append($("<label>", {
+    for: "importZip"
+}).append($("<img>", {
+    src: "http://illiweb.com/fa/admin/icones/question2.png",
+    title: showTip(trans.im.tooltip).text,
+    "class": "show_tooltips",
+    align: "absmiddle"
+})).append($("<span>", {
+    text: trans.im.choose
+}))).append($("<br>")).append($("<br>")).append($("<span>", {
+    "class": "backupOption",
+    text: trans.option
+})).append($("<br>")).append($("<label>", {
+    for: "importPublish"
+}).append($("<input>", {
+    id: "importPublish",
+    type: "checkbox"
+})).append($("<span>", {
+    text: trans.im.notpublish
+}))).append($("<label>", {
+    for: "importOne"
+}).append($("<input>", {
+    id: "importOne",
+    "class": "oneMode",
+    type: "checkbox"
+})).append($("<span>", {
+    text: trans.simpleclick
+}))).append($("<button>", {
+    id: "importStart",
+    "class": "buttonOne",
+    text: trans.bt.start
+}))).append($("<dd>").append($("<input>", {
+    type: "file",
+    id: "importZip",
+    name: "importZip",
+    accept: "application/zip"
+})).append($("<div>", {
+    id: "readerTemp",
+    css: {
+        marginTop: 20
+    }
+})).append($("<div>", {
+    "class": "div_btns"
+}).append($("<input>", {
+    type: "button",
+    id: "importTemp",
+    "class": "icon_ok",
+    name: "importTemp",
+    value: trans.bt.submit
+})))))).insertAfter("blockquote");
 
 // Tạo danh sách các nhóm Temp trong khu vực Tải xuống
 menuTemp();
@@ -662,7 +837,7 @@ $("#testTemp").click(function () {
         alertUnload();
 
         $(this).hide();
-        $("#refreshTemp, #exportTemp").show();
+        $("#refreshTemp, #exportTemp").hide();
 
         replaceIcon(".catTemp:not(:checked)", "disable");
         noti(trans.wail, "load");
@@ -835,7 +1010,21 @@ $("#zzImport").on("change", "#importZip", function (evt) {
                             // Tạo nhóm Temp
                             var arrName = nameFile.split(/\/|\./);
                             if (!$(".catTemp2[value=\"" + arrName[0] + "\"]").length) {
-                                $result.append("<div class=\"hasTemp2\"><label><input class=\"catTemp2\" type=\"checkbox\" value=\"" + arrName[0] + "\" checked />&nbsp;<strong style=\"color: #0014FF\">" + listTempGroup[arrName[0]] + "</strong></label><ol class=\"" + arrName[0] + "\"></ol></div>");
+                                $result.append($("<div>", {
+                                    "class": "hasTemp2"
+                                }).append($("<label>").append($("<input>", {
+                                    "class": "catTemp2",
+                                    type: "checkbox",
+                                    value: arrName[0],
+                                    checked: "checked"
+                                })).append($("<strong>", {
+                                    css: {
+                                        color: "#0014FF"
+                                    },
+                                    text: listTempGroup[arrName[0]]
+                                }))).append($("<ol>", {
+                                    "class": arrName[0]
+                                })));
                             }
 
                             // Đánh dấu Temp không được xuất bản
@@ -848,7 +1037,17 @@ $("#zzImport").on("change", "#importZip", function (evt) {
                             }
 
                             // Thêm Temp vào nhóm tương ứng
-                            $("<li><label><input class=\"cusTemp2\" type=\"checkbox\" value=\"" + wailTemp[0] + "\" checked />&nbsp;<span style=\"color:" + colorName + "\">" + arrName[2] + "</span></label></li>").appendTo(".hasTemp2 ." + arrName[0]);
+                            $("<li>").append($("<label>").append($("<input>", {
+                                "class": "cusTemp2",
+                                type: "checkbox",
+                                value: wailTemp[0],
+                                checked: "checked"
+                            })).append($("<span>", {
+                                css: {
+                                    color: colorName
+                                },
+                                text: arrName[2]
+                            }))).appendTo(".hasTemp2 ." + arrName[0]);
 
                             // Tạo danh sách dữ liệu các Temp
                             zipTemp.push({

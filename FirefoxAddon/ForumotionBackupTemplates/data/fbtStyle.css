@@ -26,7 +26,6 @@
     color: rgb(0, 168, 161);
 }
 
-
 #importNoti strong {
     color: #DA4FB8
 }
@@ -64,7 +63,24 @@
     background: #444;
 }
 
-#zzBackup :disabled, #zzBackup :disabled ~ span {
+#zzBackup:disabled,
+#zzBackup:disabled ~ span {
     color: #999;
     cursor: not-allowed;
+}
+
+.notiIcon {
+    height: 13px;
+    width: 13px;
+    vertical-align: middle;
+    margin-top: -3px;
+    margin-right: 3px;
+}
+
+.catTemp,
+.catTemp2,
+.cusTemp,
+.cusTemp2,
+.style-theme-export dt input {
+    margin-right: 3px;
 }
