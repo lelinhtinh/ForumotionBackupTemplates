@@ -84,3 +84,7 @@
 .style-theme-export dt input {
     margin-right: 3px;
 }
+
+#zzBackup .messagebox {
+    white-space: pre-wrap;
+}
