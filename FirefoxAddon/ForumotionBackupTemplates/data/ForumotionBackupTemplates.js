@@ -314,7 +314,8 @@ function requestLimit(exim, time, se, temp, Id, callback) {
         id: Id,
         css: {
             color: "#FF0080"
-        }
+        },
+        text: time + " " + trans.second
     }));
     // Bắt đầu đếm ngược
     var count = time - 1,
@@ -574,7 +575,7 @@ function testTemp(n) {
                 }
 
                 var customTempId = this.search.match(/&t=(\d+)&/)[1];
-                var $tempName = $(this).children();
+                var $tempName = $(this).find("span");
 
 
                 $("<li>").append($("<label>").append($tempName).prepend($("<input>", {
