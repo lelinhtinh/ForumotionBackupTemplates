@@ -46,25 +46,25 @@ var lang = {
     vi: {
         ex: {
             title: "Xuất Template",
-            tooltip: "Trong bảng này, bạn có thể xuất tất cả [[template đã được thay đổi]] của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút {{Kiểm tra}} để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+            tooltip: "Trong bảng này, bạn có thể xuất tất cả template đã được thay đổi của bạn vào một tập tin nén (.zip) và tải nó về máy.\nĐể bắt đầu, bạn nhấn vào nút Kiểm tra để lấy thông tin phiên bản và danh sách template cần xuất. Sau đó nhấn Xác nhận và chờ tiến trình hoàn thành.",
             checkall: "Chọn tất cả",
             unpublish: "Template chưa công khai",
-            firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn {{Kiểm tra}}.",
+            firsttip: "Chọn các mục chứa template cần lưu trữ và nhấn Kiểm tra.",
             download: "Tập tin đang được tải xuống. Nhấn vào đây nếu bạn đợi quá lâu.",
             download2: "Template của bạn đã được tải xong.",
             notemplate: "Không có template cần lưu trữ.",
             sumtemplate: "Tổng số template cần lưu trữ là",
-            presssubmit: "Nhấn {{Xác nhận}} để bắt đầu!",
-            pressrefresh: "Nhấn {{Làm lại}} để chọn mục khác!",
+            presssubmit: "Nhấn Xác nhận để bắt đầu!",
+            pressrefresh: "Nhấn Làm lại để chọn mục khác!",
             loading: "Đang tạo tập tin lưu trữ..."
         },
         im: {
             title: "Nhập Template",
-            tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn [[Chọn tệp]] (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn {{Xác nhận}} và chờ tiến trình hoàn thành.",
+            tooltip: "Trong bảng này, bạn có thể nhập template từ tập tin nén (.zip) đã lưu trữ trước đó. Lưu ý rằng: diễn đàn phải được chạy cùng phiên bản với bản lưu trữ.\nĐể bắt đầu, bạn nhấn Chọn tệp (Browse...) và tìm đến vị trí tập tin lưu trữ. Sau đó nhấn Xác nhận và chờ tiến trình hoàn thành.",
             choose: "Chọn tập tin lưu trữ",
             notpublish: "Không công khai template",
-            firsttip: "Chọn tập tin đã lưu trữ và nhấn {{Xác nhận}}.",
-            notname: "Lỗi không tương thích! Tên tập tin <<không hợp lệ>>.",
+            firsttip: "Chọn tập tin đã lưu trữ và nhấn Xác nhận.",
+            notname: "Lỗi không tương thích! Tên tập tin không hợp lệ.",
             notversion: "Lỗi không tương thích! Tập tin này lưu trữ Template cho phiên bản",
             source: "Nguồn",
             version: "Phiên bản",
@@ -93,25 +93,25 @@ var lang = {
     en: {
         ex: {
             title: "Export Template",
-            tooltip: "In this table, you can also export [[changed template]] to a *.zip file and save it to your computer.\nTo start, click {{Check}} button to get version information and the list of templates that you want to export. Then click {{Ok}}, wait for few seconds and you are good to go.",
+            tooltip: "In this table, you can also export changed template to a *.zip file and save it to your computer.\nTo start, click Check button to get version information and the list of templates that you want to export. Then click Ok, wait for few seconds and you are good to go.",
             checkall: "Pick all",
             unpublish: "Waiting Templates",
-            firsttip: "Pick categories you need then click {{Check}}.",
+            firsttip: "Pick categories you need then click Check.",
             download: "Downloading your templates. Click here if its take too long!",
             download2: "Your templates have been downloaded.",
             notemplate: "There's no template archive needed",
             sumtemplate: "The number of template archive needed it's",
-            presssubmit: "Click {{Ok}} to start!",
-            pressrefresh: "Click {{Start over}} to change your options!",
+            presssubmit: "Click Ok to start!",
+            pressrefresh: "Click Start over to change your options!",
             loading: "Creating Zip file..."
         },
         im: {
             title: "Import Template",
-            tooltip: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click [[Open file]] (Browse...) pick your template zipped file (*.zip). Then click {{Ok}}, wait for few seconds and you are good to go.",
+            tooltip: "In this table, you can also import template from a *.zip file. Attention: your version must match with the version of the template you are going to import.\nTo start, click Open file (Browse...) pick your template zipped file (*.zip). Then click Ok, wait for few seconds and you are good to go.",
             choose: "Open zipped file",
             notpublish: "Not publish Template",
-            firsttip: "Pick your zipped file then click {{Ok}}.",
-            notname: "Opps! File name is <<not valid>>.",
+            firsttip: "Pick your zipped file then click Ok.",
+            notname: "Opps! File name is not valid.",
             notversion: "Opps! This template require ",
             source: "Source",
             version: "Version",
@@ -161,18 +161,6 @@ if (allowNotification) {
         body: trans.bt.start,
         icon: goodIcon
     });
-}
-
-/**
- * Chuyển các ký hiệu trong gói ngôn ngữ sang 2 dạng html và text
- * @param  {String} txt Nội dung ghi chú
- * @return {Object}     html, text
- */
-function showTip(txt) {
-    return {
-        html: txt.replace(/{{([^\}\}]+)}}/g, "<span style=\"color:green\">$1</span>").replace(/\[\[([^\]\]]+)\]\]/g, "<span style=\"color:#444\">$1</span>").replace(/<<([^>>]+)>>/g, "<strong>$1</strong>").replace(/\n/g, "<br />"),
-        text: txt.replace(/{{([^\}\}]+)}}/g, "$1").replace(/\[\[([^\]\]]+)\]\]/g, "$1").replace(/<<([^>>]+)>>/g, "$1")
-    };
 }
 
 
@@ -251,9 +239,9 @@ function noti(mess, icon, imp) {
         }).appendTo(se);
     }
     $("<span>", {
-        html: showTip(mess).html
+        text: mess
     }).appendTo(se);
-    // console.log(showTip(mess).text);
+    // console.log(mess);
 }
 
 
@@ -315,18 +303,24 @@ function requestLimit(exim, time, se, temp, Id, callback) {
     replaceIcon(se, "error"); // Đổi trạng thái
 
     noti(trans.errortemplate + temp + "!", "error", exim);
-    noti(trans.requestlimit + " <span id=\"" + Id + "\" style=\"color:#FF0080\">" + time + "</span> " + trans.second, "error", exim);
+    noti(trans.requestlimit + " ", "error", exim);
     if (allowNotification) {
         new Notification("Error", {
             body: trans.requestlimit + " " + time + " " + trans.second,
             icon: badIcon
         });
     }
+    $("#" + place).find(".messagebox").find("span").append($("<span>", {
+        id: Id,
+        css: {
+            color: "#FF0080"
+        }
+    }));
     // Bắt đầu đếm ngược
     var count = time - 1,
         resum = setInterval(function () {
             var result = count--;
-            $("#" + Id).text(result);
+            $("#" + Id).text(result + " " + trans.second);
 
             if (result <= 0) {
                 clearInterval(resum);
@@ -384,7 +378,13 @@ function exportTemp(n) {
 
             $("#exportWait, #exportOne, #exportStart").prop("disabled", false);
 
-            noti("<a href=\"" + window.URL.createObjectURL(blob) + "\" download=\"" + zipName + "\">" + trans.ex.download + "</a>", "success");
+            noti("", "success");
+            $("#exportNoti").find("span").append($("<a>", {
+                href: window.URL.createObjectURL(blob),
+                title: zipName,
+                download: zipName,
+                text: trans.ex.download
+            }));
 
             scrollGoto("zzExport");
             $("#refreshTemp").show();
@@ -574,12 +574,10 @@ function testTemp(n) {
                 }
 
                 var customTempId = this.search.match(/&t=(\d+)&/)[1];
-                var $tempName = $(this).html();
+                var $tempName = $(this).children();
 
 
-                $("<li>").append($("<label>", {
-                    html: $tempName
-                }).prepend($("<input>", {
+                $("<li>").append($("<label>").append($tempName).prepend($("<input>", {
                     "class": "cusTemp",
                     type: "checkbox",
                     value: customTempId + markWail,
@@ -622,7 +620,7 @@ function testTemp(n) {
             }
 
             $("#refreshTemp, #exportTemp").show();
-            noti(trans.ex.sumtemplate + ": <span style=\"color:#FF0080\">" + sumTemp + "</span>.\n" + mess, "info");
+            noti(trans.ex.sumtemplate + ": " + sumTemp + ".\n" + mess, "info");
 
             if ($("#exportOne").prop("checked")) {
                 $("#exportTemp").click();
@@ -697,7 +695,7 @@ $("<div>", {
     }
 })).append($("<img>", {
     src: "http://illiweb.com/fa/admin/icones/question2.png",
-    title: showTip(trans.ex.tooltip).text,
+    title: trans.ex.tooltip,
     "class": "show_tooltips",
     align: "absmiddle"
 })).append($("<span>", {
@@ -764,7 +762,7 @@ $("<div>", {
     for: "importZip"
 }).append($("<img>", {
     src: "http://illiweb.com/fa/admin/icones/question2.png",
-    title: showTip(trans.im.tooltip).text,
+    title: trans.im.tooltip,
     "class": "show_tooltips",
     align: "absmiddle"
 })).append($("<span>", {
@@ -944,7 +942,7 @@ function notVaildName() {
     noti(trans.im.notname, "error", true);
     if (allowNotification) {
         new Notification("Error", {
-            body: showTip(trans.im.notname).text,
+            body: trans.im.notname,
             icon: badIcon
         });
     }
@@ -980,7 +978,7 @@ $("#zzImport").on("change", "#importZip", function (evt) {
 
                     // Kiểm tra phiên bản Forumotion
                     if (backup[1] !== forumVersion) {
-                        noti(trans.im.notversion + " <<" + verName[backup[1]] + ">>.", "error", true);
+                        noti(trans.im.notversion + " " + verName[backup[1]] + ".", "error", true);
                         if (allowNotification) {
                             new Notification("Error", {
                                 body: trans.im.notversion + " " + verName[backup[1]],
@@ -992,7 +990,7 @@ $("#zzImport").on("change", "#importZip", function (evt) {
                     } else {
                         var zipImport = new JSZip(e.target.result); // Phân tích tệp zip
 
-                        noti("<<" + trans.im.source + ">>: <a href=\"http://" + backup[3] + "\" target=\"_blank\">" + backup[3] + "</a>\n<<" + trans.im.version + ">>: " + verName[backup[1]] + "\n<<" + trans.im.time + ">>: " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n<<" + trans.im.count + ">>: " + Object.keys(zipImport.files).length, false, true);
+                        noti(trans.im.source + ": http://" + backup[3] + "\n" + trans.im.version + ": " + verName[backup[1]] + "\n" + trans.im.time + ": " + timeFormat(1E3 * parseInt(backup[2], 10)) + "\n" + trans.im.count + ": " + Object.keys(zipImport.files).length, false, true);
 
                         zipTemp = [];
                         $.each(zipImport.files, function (index, zipEntry) { // Lấy dữ liệu các tệp bên trong
