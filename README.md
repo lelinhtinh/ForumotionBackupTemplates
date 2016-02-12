@@ -189,3 +189,7 @@ https://github.com/baivong/ForumotionBackupTemplates/issues
 If you appreciate the extension, please donate to help fund development and support costs. A huge amount of work has gone into this:
 
 http://bit.ly/Donate_ForumotionBackupTemplates
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/baivong/forumotionbackuptemplates/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
