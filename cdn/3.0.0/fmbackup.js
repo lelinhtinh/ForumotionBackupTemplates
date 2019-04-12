@@ -2,7 +2,7 @@
  * jsZip (v2.5.0) By StuartKnightley <http://stuartk.com/jszip>
  * jszip-utils (v0.0.2) By Stuart Knightley, David Duponchel <http://stuk.github.io/jszip-utils>
  * FileSaver (2015-05-07.2) By Eli Grey <http://eligrey.com>
- * ForumotionBackupTemplates (v3.0.0) By Zzbaivong <http://devs.forumvi.com>
+ * ForumotionBackupTemplates (v3.0.1) By Zzbaivong <http://devs.forumvi.com>
  */
 
 fmbackup = function () {
@@ -599,13 +599,13 @@ fmbackup = function () {
         }, fmbackup.translation);
 
         setIcons = $.extend({}, {
-            good: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/good.png",
-            bad: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/bad.png",
-            load: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/load.gif",
-            info: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/info.png",
-            error: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/error.gif",
-            success: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/success.gif",
-            disable: "http://baivong.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
+            good: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/good.png",
+            bad: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/bad.png",
+            load: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/load.gif",
+            info: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/info.png",
+            error: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/error.gif",
+            success: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/success.gif",
+            disable: "https://lelinhtinh.github.io/ForumotionBackupTemplates/cdn/icons/disable.png"
         }, fmbackup.icons);
 
         // Cập nhật thông tin phiên bản Forumotion
@@ -613,14 +613,14 @@ fmbackup = function () {
 
 
             var $activetab = $(data).find("#activetab"),
-                $user_connected = $(data).find("#user_connected"),
+                $user_connected = $(data).find("#page-header .avatar-header + span:first"),
                 $form_version = $(data).find("[name=\"form_version\"]");
 
             if ($form_version.length !== 0 && $activetab.length !== 0 && $user_connected.length !== 0 && !isNaN(fmbackup.page_id)) {
 
                 forumVersion = $form_version.find("dd:first > input:checked").val();
                 tId = $activetab.find("a").attr("href").match(/&tid=([^&?]+)/)[1];
-                $("#user_connected").html($user_connected.html());
+                $("#user_connected").html($user_connected.text());
                 $(".url").html($(data).find(".url").html());
 
                 $("[name=\"tpl\"][value=\"" + forumVersion + "\"]").prop("checked", true);
@@ -645,7 +645,7 @@ fmbackup = function () {
                 });
 
                 // Thêm Forumotion Backup Templates vào Bảng quản trị giao diện
-                $("#templates").html("<blockquote class=\"block_left\"><p class=\"explain\">" + showTip(trans.decs).html + "</p></blockquote><div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"http://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
+                $("#templates").html("<blockquote class=\"block_left\"><p class=\"explain\">" + showTip(trans.decs).html + "</p></blockquote><div id=\"zzBackup\"><fieldset id=\"zzExport\" class=\"style-theme-export\"><legend>" + trans.ex.title + "</legend><p id=\"exportNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"exportAll\"><input id=\"exportAll\" type=\"checkbox\" value=\"\" style=\"display: none;\"><img src=\"https://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.ex.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\"><span>&nbsp;" + trans.ex.checkall + "</span></label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"exportWait\"><input id=\"exportWait\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.ex.unpublish + "</span></label><label for=\"exportOne\"><input id=\"exportOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"exportStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><div id=\"listTemp\"></div><div class=\"div_btns\"><input type=\"button\" id=\"testTemp\" name=\"testTemp\" value=\"" + trans.bt.filter + "\" class=\"icon_search\" /><input type=\"button\" id=\"refreshTemp\" name=\"refreshTemp\" value=\"" + trans.bt.refresh + "\" class=\"icon_refresh\" style=\"display: none;\" /><input type=\"button\" id=\"exportTemp\" name=\"exportTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" style=\"display: none;\" /></div></dd></dl></fieldset><fieldset id=\"zzImport\" class=\"style-theme-export\"><legend>" + trans.im.title + "</legend><p id=\"importNoti\" class=\"messagebox\"></p><dl class=\"clearfix\"><dt><label for=\"importZip\"><img src=\"https://illiweb.com/fa/admin/icones/question2.png\" title=\"" + showTip(trans.im.tooltip).text + "\" class=\"show_tooltips\" align=\"absmiddle\">&nbsp;" + trans.im.choose + "</label><br /><br /><span class=\"backupOption\">" + trans.option + "</span><br /><label for=\"importPublish\"><input id=\"importPublish\" type=\"checkbox\" value=\"\" /><span>&nbsp;" + trans.im.notpublish + "</span></label><label for=\"importOne\"><input id=\"importOne\" class=\"oneMode\" type=\"checkbox\" value=\"\"><span>&nbsp;" + trans.simpleclick + "</span></label><button id=\"importStart\" class=\"buttonOne\">" + trans.bt.start + "</button></dt><dd><input type=\"file\" id=\"importZip\" name=\"importZip\" accept=\"application/zip\" /><div id=\"readerTemp\" style=\"margin-top: 20px;\"></div><div class=\"div_btns\"><input type=\"button\" id=\"importTemp\" name=\"importTemp\" value=\"" + trans.bt.submit + "\" class=\"icon_ok\" /></div></dd></dl></fieldset></div>");
 
                 // Tạo danh sách các nhóm Temp trong khu vực Tải xuống
                 menuTemp();
